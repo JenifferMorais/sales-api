@@ -1,55 +1,56 @@
-# Maven
-target
-.mvn
+# Build output
+target/
+!target/quarkus-app
+
+# Maven wrapper
+.mvn/
 mvnw
 mvnw.cmd
 
 # IDE
-.vscode
-.idea
+.vscode/
+.idea/
 .project
 .classpath
-.settings
+.settings/
 *.swp
 *.swo
 *.swn
 .DS_Store
 *.iml
 
-# Tests (allow main resources with JWT keys)
-src/test/**
-
 # Documentation
 README.md
 *.md
-docs
+docs/
 
 # Git
-.git
+.git/
 .gitignore
 .gitattributes
 
 # CI/CD
-.github
+.github/
 
-# Environment
+# Environment files
 .env
 .env.*
 
-# Docker
-Dockerfile
+# Docker files (não copiar dentro do container)
+docker/
+Dockerfile*
 docker-compose*.yml
 .dockerignore
 
 # Logs
 *.log
-logs
+logs/
 
 # OS
 Thumbs.db
 
-# Scripts Windows
-*.bat
+# Quarkus dev
+.quarkus/
 
-# Quarkus Dev
-.quarkus
+# Tests (mas manter src/main)
+src/test/
