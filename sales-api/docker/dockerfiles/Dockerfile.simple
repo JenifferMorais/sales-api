@@ -22,10 +22,10 @@ COPY --from=build /app/target/quarkus-app/*.jar ./
 COPY --from=build /app/target/quarkus-app/app/ ./app/
 COPY --from=build /app/target/quarkus-app/quarkus/ ./quarkus/
 
-# Copiar chaves JWT do build output
+# Copiar chaves JWT do código fonte
 RUN mkdir -p /deployments
-COPY --from=build /app/target/classes/META-INF/resources/publicKey.pem /deployments/publicKey.pem
-COPY --from=build /app/target/classes/META-INF/resources/privateKey.pem /deployments/privateKey.pem
+COPY --from=build /app/src/main/resources/META-INF/resources/publicKey.pem /deployments/publicKey.pem
+COPY --from=build /app/src/main/resources/META-INF/resources/privateKey.pem /deployments/privateKey.pem
 
 # Expor porta
 EXPOSE 8080
