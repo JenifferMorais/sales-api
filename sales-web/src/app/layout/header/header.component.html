@@ -1,0 +1,31 @@
+<header class="app-header">
+  <div class="left">
+    <button class="icon" aria-label="Menu" (click)="toggleSidebar.emit()">
+      <iconify-icon icon="mdi:menu" width="24" height="24"></iconify-icon>
+    </button>
+  </div>
+
+  <div class="right">
+    <button class="icon" aria-label="Alternar tema" (click)="onToggleTheme()">
+      <iconify-icon [icon]="isDark ? 'mdi:weather-sunny' : 'mdi:weather-night'" width="24" height="24"></iconify-icon>
+    </button>
+
+    <button class="icon" aria-label="Notificações">
+      <iconify-icon icon="mdi:bell-badge-outline" width="24" height="24"></iconify-icon>
+    </button>
+
+    <div class="profile">
+      <button class="icon avatar" aria-label="Perfil" aria-haspopup="menu" aria-expanded="false">
+        <iconify-icon icon="mdi:account-circle-outline" width="24" height="24"></iconify-icon>
+          <iconify-icon icon="mdi:chevron-down" class="down" width="18" height="18"></iconify-icon>
+      </button>
+
+      <div class="menu" role="menu">
+        <button role="menuitem" class="menu-item" (click)="onLogout()">
+          <iconify-icon icon="mdi:logout" width="18" height="18"></iconify-icon>
+          <span>Sair</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</header>

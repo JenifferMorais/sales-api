@@ -1,0 +1,17 @@
+<app-modal [open]="open" [width]="420" [height]="260" (close)="onClose()">
+  <div modalBody class="confirm-center-delete">
+    <div class="confirm-icon-delete">
+      <iconify-icon icon="mdi:alert-outline" width="56" height="56"></iconify-icon>
+    </div>
+
+    <h3 class="confirm-heading">Tem a certeza que deseja excluir?</h3>
+    <p class="confirm-sub">Essa ação é definitiva e não pode ser desfeita!</p>
+  </div>
+
+  <div modalFooter class="footer-center">
+    <button class="btn btn--ghost" type="button" (click)="onClose()">Cancelar</button>
+    <button class="btn btn--danger" type="button" [disabled]="loading " (click)="onConfirm()">
+      <span>{{ loading  ? 'Excluindo…' : 'Sim, apagar!' }}</span>
+    </button>
+  </div>
+</app-modal>

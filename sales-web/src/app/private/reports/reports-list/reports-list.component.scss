@@ -1,0 +1,37 @@
+.section-title {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 16px;
+    color: var(--text);
+}
+
+.simple-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.simple-table thead {
+    background: var(--surface-2);
+}
+
+.simple-table th,
+.simple-table td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+}
+
+.simple-table th {
+    font-weight: 600;
+    color: var(--text);
+    font-size: 14px;
+}
+
+.simple-table td {
+    color: var(--text);
+    font-size: 14px;
+}
+
+.simple-table tbody tr:hover {
+    background: var(--surface-2);
+}

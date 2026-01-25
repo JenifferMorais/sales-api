@@ -1,0 +1,13 @@
+<div class="searchbar">
+  <input [placeholder]="placeholder" [(ngModel)]="value" (ngModelChange)="onInput($event)"
+    (keyup.enter)="onKeyupEnter()" type="text" />
+
+  <button class="suffix" type="button" aria-label="Buscar" (click)="onSubmit()">
+    <iconify-icon icon="mdi:magnify" width="20" height="20"></iconify-icon>
+  </button>
+</div>
+
+<button *ngIf="showFilter" class="btn outline" type="button" (click)="onOpenFiltersClicked()">
+  <iconify-icon icon="mdi:filter-variant" width="16" height="16"></iconify-icon>
+  <span>Filtro</span>
+</button>

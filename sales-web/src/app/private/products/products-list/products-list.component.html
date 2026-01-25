@@ -1,0 +1,41 @@
+<section class="page">
+  <div class="admin-head">
+    <div>
+      <small class="crumb">PRODUTOS</small>
+      <h1 class="title">Produtos</h1>
+    </div>
+  </div>
+
+  <header class="toolbar">
+    <app-filter-bar
+      class="toolbar__left"
+      [placeholder]="'Buscar produto'"
+      [dropdownOptions]="categoryOptions"
+      [dropdownValue]="category"
+      [(textSearch)]="searchText"
+      (searchChange)="onSearch($event)"
+      (dropdownChange)="onCategoryChange($event)">
+    </app-filter-bar>
+
+    <div class="toolbar__right">
+      <app-button (clicked)="createProduct()">Cadastrar produto</app-button>
+    </div>
+  </header>
+
+  <app-data-table-outline
+    [columns]="columns"
+    [data]="rows"
+    [rowActions]="rowActions"
+    [totalItems]="totalItems"
+    [pageSize]="pageSize"
+    [pageIndex]="pageIndex"
+    (pageChange)="onPage($event)">
+  </app-data-table-outline>
+</section>
+
+<app-delete-confirm
+  [open]="deleteOpen"
+  [loading]="deleting"
+  (close)="closeDelete()"
+  (confirm)="confirmDelete()">
+</app-delete-confirm>

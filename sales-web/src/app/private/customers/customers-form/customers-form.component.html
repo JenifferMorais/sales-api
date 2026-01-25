@@ -1,0 +1,125 @@
+<section class="page">
+  <div class="admin-head">
+    <div>
+      <small class="crumb">CLIENTES</small>
+      <h1 class="title">{{ isEdit ? 'Editar cliente' : 'Cadastrar cliente' }}</h1>
+    </div>
+  </div>
+
+  <form [formGroup]="form">
+    <div class="card">
+      <h3 class="card__title">Dados pessoais</h3>
+
+      <div class="grid-2">
+        <div class="field" [class.error]="form.get('fullName')?.invalid && form.get('fullName')?.touched">
+          <label>Nome completo*</label>
+          <div class="control control--input">
+            <input formControlName="fullName" placeholder="Nome completo" inputmode="text" />
+          </div>
+        </div>
+
+        <div class="field" [class.error]="form.get('motherName')?.invalid && form.get('motherName')?.touched">
+          <label>Nome da mãe*</label>
+          <div class="control control--input">
+            <input formControlName="motherName" placeholder="Nome da mãe" inputmode="text" />
+          </div>
+        </div>
+
+        <div class="field" [class.error]="form.get('cpf')?.invalid && form.get('cpf')?.touched">
+          <label>CPF*</label>
+          <div class="control control--input">
+            <input formControlName="cpf" placeholder="000.000.000-00" inputmode="numeric" />
+          </div>
+        </div>
+
+        <div class="field" [class.error]="form.get('rg')?.invalid && form.get('rg')?.touched">
+          <label>RG*</label>
+          <div class="control control--input">
+            <input formControlName="rg" placeholder="00.000.000-0" inputmode="text" />
+          </div>
+        </div>
+
+        <div class="field" [class.error]="form.get('email')?.invalid && form.get('email')?.touched">
+          <label>E-mail*</label>
+          <div class="control control--input">
+            <input formControlName="email" placeholder="email@exemplo.com" inputmode="email" autocomplete="email" />
+          </div>
+        </div>
+
+        <div class="field" [class.error]="form.get('cellPhone')?.invalid && form.get('cellPhone')?.touched">
+          <label>Celular*</label>
+          <div class="control control--input">
+            <input formControlName="cellPhone" placeholder="(00) 00000-0000" inputmode="tel" />
+          </div>
+        </div>
+
+        <div class="field" [class.error]="form.get('birthDate')?.invalid && form.get('birthDate')?.touched">
+          <label>Data de nascimento*</label>
+          <div class="control control--input">
+            <input type="date" formControlName="birthDate" />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" formGroupName="address">
+      <h3 class="card__title">Endereço</h3>
+
+      <div class="grid-2">
+      <div class="field" [class.error]="form.get('address.zipCode')?.invalid && form.get('address.zipCode')?.touched">
+        <label>CEP*</label>
+        <div class="control control--input">
+          <input formControlName="zipCode" placeholder="00000-000" inputmode="numeric" />
+        </div>
+      </div>
+
+      <div class="field" [class.error]="form.get('address.street')?.invalid && form.get('address.street')?.touched">
+        <label>Rua*</label>
+        <div class="control control--input">
+          <input formControlName="street" placeholder="Nome da rua" inputmode="text" />
+        </div>
+      </div>
+
+      <div class="field" [class.error]="form.get('address.number')?.invalid && form.get('address.number')?.touched">
+        <label>Número*</label>
+        <div class="control control--input">
+          <input formControlName="number" placeholder="123" inputmode="text" />
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Complemento</label>
+        <div class="control control--input">
+          <input formControlName="complement" placeholder="Apartamento, bloco, etc" inputmode="text" />
+        </div>
+      </div>
+
+      <div class="field" [class.error]="form.get('address.neighborhood')?.invalid && form.get('address.neighborhood')?.touched">
+        <label>Bairro*</label>
+        <div class="control control--input">
+          <input formControlName="neighborhood" placeholder="Nome do bairro" inputmode="text" />
+        </div>
+      </div>
+
+      <div class="field" [class.error]="form.get('address.city')?.invalid && form.get('address.city')?.touched">
+        <label>Cidade*</label>
+        <div class="control control--input">
+          <input formControlName="city" placeholder="Nome da cidade" inputmode="text" />
+        </div>
+      </div>
+
+      <div class="field" [class.error]="form.get('address.state')?.invalid && form.get('address.state')?.touched">
+        <label>Estado*</label>
+        <div class="control control--input">
+          <input formControlName="state" placeholder="UF" maxlength="2" inputmode="text" />
+        </div>
+      </div>
+    </div>
+  </div>
+  </form>
+
+  <div class="actions">
+    <app-button styleClass="btn-outline" (clicked)="onCancel()">Cancelar</app-button>
+    <app-button styleClass="btn-green-form" (clicked)="onSubmit()">Salvar</app-button>
+  </div>
+</section>

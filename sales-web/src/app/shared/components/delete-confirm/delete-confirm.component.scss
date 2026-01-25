@@ -1,0 +1,136 @@
+.modal-root {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(4px);
+  animation: fadeIn 0.2s ease-out;
+}
+
+.modal-dialog {
+  position: relative;
+  z-index: 1001;
+  max-width: 480px;
+  width: calc(100% - 32px);
+  animation: slideIn 0.3s ease-out;
+}
+
+.modal-content {
+  background: var(--modal-bg);
+  border-radius: 16px;
+  box-shadow: var(--modal-shadow);
+  overflow: hidden;
+}
+
+.modal-header {
+  padding: 32px 32px 24px;
+  text-align: center;
+}
+
+.modal-icon {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 16px;
+
+  &--danger {
+    background: #fee2e2;
+    color: #ef4444;
+  }
+}
+
+.modal-title {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--modal-text);
+}
+
+.modal-body {
+  padding: 0 32px 32px;
+  text-align: center;
+
+  p {
+    margin: 0;
+    color: var(--modal-muted);
+    font-size: 15px;
+    line-height: 1.6;
+  }
+}
+
+.modal-footer {
+  padding: 24px 32px;
+  background: var(--surface-2);
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+}
+
+.btn {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+.btn--outline {
+  background: var(--modal-bg);
+  color: var(--modal-text);
+  border: 2px solid var(--modal-border);
+
+  &:hover:not(:disabled) {
+    background: var(--surface-2);
+    border-color: var(--text-muted);
+  }
+}
+
+.btn--danger {
+  background: #ef4444;
+  color: white;
+
+  &:hover:not(:disabled) {
+    background: #dc2626;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}

@@ -1,0 +1,146 @@
+:host {
+  display: block;
+}
+
+.table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  background: transparent;
+}
+
+th[mat-header-cell] {
+  font-weight: 600;
+  font-size: 16px;
+  letter-spacing: .3px;
+  color: var(--text);
+  background: transparent;
+  font-family: 'Sora', sans-serif;
+}
+
+td[mat-cell] {
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+  border-top: 1px solid var(--border);
+  color: var(--text);
+  font-family: 'Sora', sans-serif;
+}
+
+.table-row {
+}
+
+.table-row:hover td[mat-cell] {
+  background: var(--surface-2);
+}
+
+.more-trigger {
+  cursor: pointer;
+  font-size: 22px;
+  width: 24px;
+  height: 24px;
+  color: var(--text-muted);
+  border-radius: 6px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform .08s ease, background-color .12s ease, color .12s ease;
+}
+
+.table-row:hover .more-trigger {
+  color: var(--text);
+}
+
+.more-trigger:active {
+  transform: scale(.97);
+}
+
+
+.mat-mdc-menu-panel,
+.mat-mdc-menu-content {
+  background: var(--surface);
+}
+
+.mat-mdc-menu-item .mat-icon {
+  font-size: 20px;
+  margin-right: 12px;
+}
+
+.mat-mdc-menu-item.tone-view .mat-icon {
+  color: var(--info-500);
+}
+
+.mat-mdc-menu-item.tone-edit .mat-icon {
+  color: var(--warning-500);
+}
+
+.mat-mdc-menu-item.tone-remove .mat-icon {
+  color: var(--danger-500);
+}
+
+.mat-mdc-menu-item:hover {
+  background: color-mix(in oklab, var(--accent-color) 6%, transparent);
+}
+
+.paginator {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  padding: 20px 4px 8px;
+  font-family: 'Sora', sans-serif;
+}
+
+.circle {
+  width: 40px;
+  height: 40px;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+  cursor: pointer;
+  transition: transform .08s ease, background-color .12s ease, color .12s ease, border-color .12s ease;
+}
+
+.circle:not(.disabled):active {
+  transform: scale(.97);
+}
+
+.circle.active {
+  background: var(--accent-color);
+  color: #fff;
+  border-color: transparent;
+}
+
+.circle .mat-icon {
+  font-size: 22px;
+}
+
+.align-right {
+  text-align: right;
+}
+
+.align-center {
+  text-align: center;
+}
+
+.cell-text.ellipsis {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+:host ::ng-deep .themed-menu .mat-mdc-menu-item.tone-view .mat-icon {
+  color: var(--info-500);
+}
+
+:host ::ng-deep .themed-menu .mat-mdc-menu-item.tone-edit .mat-icon {
+  color: var(--warning-500);
+}
+
+:host ::ng-deep .themed-menu .mat-mdc-menu-item.tone-remove .mat-icon {
+  color: var(--danger-500);
+}

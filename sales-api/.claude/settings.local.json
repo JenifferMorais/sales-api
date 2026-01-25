@@ -1,0 +1,31 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(mvn clean compile:*)",
+      "Bash(bash:*)",
+      "Bash(java -version:*)",
+      "Bash(where:*)",
+      "Bash(echo:*)",
+      "Bash(cmd.exe /c \"C:\\\\Users\\\\jenim\\\\Documents\\\\Projeto\\\\sales-api\\\\install-lombok.bat\")",
+      "Bash(test:*)",
+      "Bash(docker logs:*)",
+      "Bash(./mvnw:*)",
+      "Bash(cmd /c verificar-saude.bat)",
+      "Bash(curl:*)",
+      "Bash(mvn test:*)",
+      "Bash(cmd /c \"run-tests.bat < nul\")",
+      "Bash(dir:*)",
+      "Bash(ls:*)",
+      "Bash(\"/c/Program Files/JetBrains/IntelliJ IDEA 2025.2.5/plugins/maven/lib/maven3/bin/mvn.cmd\" -version)",
+      "Bash(\"/c/Program Files/JetBrains/IntelliJ IDEA 2025.2.5/plugins/maven/lib/maven3/bin/mvn.cmd\" clean test-compile)",
+      "Bash(\"/c/Program Files/JetBrains/IntelliJ IDEA 2025.2.5/plugins/maven/lib/maven3/bin/mvn.cmd\" test-compile)",
+      "Bash(\"/c/Program Files/JetBrains/IntelliJ IDEA 2025.2.5/jbr/bin/java.exe\" -version)",
+      "Bash(export JAVA_HOME=\"/c/Program Files/JetBrains/IntelliJ IDEA 2025.2.5/jbr\")",
+      "Bash(\"/c/Program Files/JetBrains/IntelliJ IDEA 2025.2.5/plugins/maven/lib/maven3/bin/mvn.cmd\" compiler:testCompile)",
+      "Bash(\"/c/Program Files/JetBrains/IntelliJ IDEA 2025.2.5/plugins/maven/lib/maven3/bin/mvn.cmd\" compile test-compile)",
+      "Bash(find:*)",
+      "Bash(\"/c/Program Files/JetBrains/IntelliJ IDEA 2025.2.5/plugins/maven/lib/maven3/bin/mvn.cmd\" clean compile)",
+      "Bash(netstat:*)"
+    ]
+  }
+}

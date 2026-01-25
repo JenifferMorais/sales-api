@@ -1,0 +1,36 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: sales-postgres
+    environment:
+      POSTGRES_DB: sales_db
+      POSTGRES_USER: sales
+      POSTGRES_PASSWORD: dev_password_change_me
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - sales-network
+
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: sales-pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@sales.com
+      PGADMIN_DEFAULT_PASSWORD: dev_password_change_me
+    ports:
+      - "5050:80"
+    depends_on:
+      - postgres
+    networks:
+      - sales-network
+
+volumes:
+  postgres_data:
+
+networks:
+  sales-network:
+    driver: bridge

@@ -1,0 +1,49 @@
+<section class="home">
+  <div class="home-components">
+    <div class="content">
+      <section class="sign-in">
+        <article class="header">
+          <p class="welcome">Seja bem vindo(a)!</p>
+          <p class="description">
+            Acesse o sistema para gerenciar vendas, clientes e produtos.
+          </p>
+        </article>
+
+        <form class="form" [formGroup]="form">
+          <label class="blue">E-mail</label>
+          <mat-form-field appearance="fill" subscriptSizing="dynamic">
+            <span matPrefix class="prefix">
+              <iconify-icon icon="mdi:account-outline"></iconify-icon>
+            </span>
+            <input matInput formControlName="email" placeholder="mail@email.com" />
+            <mat-error *ngIf="form.get('email')?.errors?.['required']">Email é obrigatório</mat-error>
+            <mat-error *ngIf="form.get('email')?.errors?.['email']">Formato de email inválido</mat-error>
+          </mat-form-field>
+
+          <label class="blue">Senha</label>
+          <mat-form-field appearance="fill" subscriptSizing="dynamic">
+            <span matPrefix class="prefix">
+              <iconify-icon icon="mdi:lock-outline"></iconify-icon>
+            </span>
+            <input matInput formControlName="password" [type]="hide ? 'password' : 'text'" placeholder="********" />
+            <button type="button" matSuffix class="suffix" (click)="hide = !hide" aria-label="Mostrar/ocultar senha">
+              <iconify-icon [icon]="hide ? 'mdi:eye-off-outline' : 'mdi:eye-outline'"></iconify-icon>
+            </button>
+            <mat-error *ngIf="form.get('password')?.errors?.['required']">Senha é obrigatória</mat-error>
+          </mat-form-field>
+
+          <p class="forgot-password">
+            Esqueceu a senha?
+            <a class="link">Clique aqui!</a>
+          </p>
+        </form>
+
+        <button mat-raised-button class="cta" (click)="onSubmit()" [disabled]="isLoading">
+          ENTRAR
+        </button>
+      </section>
+    </div>
+  </div>
+
+  <div class="side-image"></div>
+</section>

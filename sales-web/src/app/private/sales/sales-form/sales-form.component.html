@@ -1,0 +1,110 @@
+<section class="page">
+  <div class="admin-head">
+    <div>
+      <small class="crumb">VENDAS</small>
+      <h1 class="title">{{ isEdit ? 'Editar venda' : 'Nova venda' }}</h1>
+    </div>
+  </div>
+
+  <form [formGroup]="form">
+    <div class="card">
+      <h3 class="card__title">Dados da venda</h3>
+
+      <div class="grid-2">
+        <div class="field" [class.error]="form.get('customerCode')?.invalid && form.get('customerCode')?.touched">
+          <label>Cliente*</label>
+          <div class="control control--select">
+            <select formControlName="customerCode">
+              <option value="">Selecione um cliente</option>
+              <option *ngFor="let customer of customers" [value]="customer.code">
+                {{ customer.fullName }}
+              </option>
+            </select>
+          </div>
+        </div>
+
+        <div class="field" [class.error]="form.get('paymentMethod')?.invalid && form.get('paymentMethod')?.touched">
+          <label>Forma de pagamento*</label>
+          <div class="control control--select">
+            <select formControlName="paymentMethod">
+              <option *ngFor="let method of paymentMethods" [value]="method.value">
+                {{ method.label }}
+              </option>
+            </select>
+          </div>
+        </div>
+
+        <div class="field full" *ngIf="form.get('paymentMethod')?.value === 'CREDIT_CARD' || form.get('paymentMethod')?.value === 'DEBIT_CARD'"
+             [class.error]="form.get('cardNumber')?.invalid && form.get('cardNumber')?.touched">
+          <label>Número do cartão*</label>
+          <div class="control control--input">
+            <input formControlName="cardNumber" placeholder="**** **** **** ****" inputmode="numeric" />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+    <div class="card__header">
+      <h3 class="card__title">Itens da venda</h3>
+      <button type="button" class="btn-add" (click)="addItem()">
+        <iconify-icon icon="mdi:plus" width="20" height="20"></iconify-icon>
+        Adicionar item
+      </button>
+    </div>
+
+    <div class="items-container" formArrayName="items">
+      <div class="item-card" *ngFor="let item of items.controls; let i = index" [formGroupName]="i">
+        <div class="item-card__fields">
+          <div class="field" [class.error]="item.get('productCode')?.invalid && item.get('productCode')?.touched">
+            <label>Produto*</label>
+            <div class="control control--select">
+              <select formControlName="productCode" (change)="onProductChange(i)">
+                <option value="">Selecione um produto</option>
+                <option *ngFor="let product of products" [value]="product.code">
+                  {{ product.name }}
+                </option>
+              </select>
+            </div>
+          </div>
+
+          <div class="field" [class.error]="item.get('quantity')?.invalid && item.get('quantity')?.touched">
+            <label>Quantidade*</label>
+            <div class="control control--input">
+              <input type="number" formControlName="quantity" min="1" placeholder="1" />
+            </div>
+          </div>
+
+          <div class="field" [class.error]="item.get('unitPrice')?.invalid && item.get('unitPrice')?.touched">
+            <label>Preço unitário*</label>
+            <div class="control control--input">
+              <input type="number" formControlName="unitPrice" min="0" step="0.01" placeholder="0.00" />
+            </div>
+          </div>
+
+          <div class="field">
+            <label>Subtotal</label>
+            <div class="subtotal-value">
+              {{ getItemSubtotal(i) | currency:'BRL' }}
+            </div>
+          </div>
+        </div>
+
+        <button type="button" class="btn-remove" (click)="removeItem(i)" [disabled]="items.length === 1">
+          <iconify-icon icon="mdi:delete" width="20" height="20"></iconify-icon>
+        </button>
+      </div>
+    </div>
+
+    <div class="total-section">
+      <div class="total-label">Total:</div>
+      <div class="total-value">{{ getSubtotal() | currency:'BRL' }}</div>
+    </div>
+  </div>
+  </form>
+
+  <div class="actions">
+    <app-button styleClass="btn-outline" (clicked)="cancel()">Cancelar</app-button>
+    <app-button styleClass="btn-green-form" (clicked)="onSubmit()" [disabled]="loading">Salvar</app-button>
+  </div>
+</section>

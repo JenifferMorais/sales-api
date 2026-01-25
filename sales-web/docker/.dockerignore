@@ -1,0 +1,49 @@
+# Dependencies
+node_modules
+npm-debug.log
+yarn-error.log
+package-lock.json
+yarn.lock
+
+# Build output
+dist
+.angular
+*.log
+
+# IDE
+.vscode
+.idea
+*.swp
+*.swo
+*~
+
+# Git
+.git
+.gitignore
+.gitattributes
+
+# Documentation
+*.md
+docs
+
+# Test
+coverage
+.nyc_output
+*.spec.ts
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# OS
+.DS_Store
+Thumbs.db
+
+# CI/CD (não copiar para dentro da imagem)
+.github
+
+# Docker
+Dockerfile*
+docker-compose*.yml
+.dockerignore

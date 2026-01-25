@@ -1,0 +1,26 @@
+####
+# Este Dockerfile é usado para criar uma imagem usando uber-jar (legacy).
+# Use apenas se necessário para compatibilidade.
+#
+# Build da imagem:
+#   docker build -f src/main/docker/Dockerfile.legacy-jar -t sales-api:uber-jar .
+#
+# Executar a imagem:
+#   docker run -i --rm -p 8080:8080 sales-api:uber-jar
+#
+###
+FROM registry.access.redhat.com/ubi8/openjdk-21-runtime:1.18
+
+ENV LANGUAGE='pt_BR:pt'
+ENV LANG='pt_BR.UTF-8'
+
+# Copiar uber-jar
+COPY --chown=185 target/quarkus-app/quarkus-run.jar /deployments/quarkus-run.jar
+
+EXPOSE 8080
+USER 185
+
+ENV JAVA_OPTS="-Dquarkus.http.host=0.0.0.0 -Djava.util.logging.manager=org.jboss.logmanager.LogManager"
+ENV JAVA_APP_JAR="/deployments/quarkus-run.jar"
+
+ENTRYPOINT [ "java", "-jar", "/deployments/quarkus-run.jar" ]

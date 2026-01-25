@@ -1,0 +1,23 @@
+.page {
+  
+}
+
+.toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding-bottom: 16px;
+}
+
+.toolbar__left {
+  flex: 1 1 auto;
+  min-width: 360px;
+}
+
+@media (max-width: 720px) {
+  .toolbar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}

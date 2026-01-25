@@ -1,0 +1,170 @@
+$blue-primary: #1e40af;
+$blue-light: #e0e7ff;
+$field-bg: #f0f4f8;
+$field-ph: #8d9399;
+
+// Layout principal
+.home {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 60% 1fr;
+  background: #f8f9fb;
+}
+
+.home-components {
+  min-height: 100vh;
+  display: grid;
+  grid-template-rows: 1fr auto;
+}
+
+.content {
+  width: 60vh;
+  place-self: center;
+  margin: 0;
+  display: grid;
+  gap: 28px;
+}
+
+.side-image {
+  background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
+}
+
+// Formulário de login
+.sign-in {
+  width: 100%;
+  max-width: 420px;
+  display: grid;
+  gap: 20px;
+  color: #1f2a24;
+
+  .header { display: grid; gap: 8px; }
+
+  .welcome {
+    font-family: 'Sora', sans-serif;
+    font-weight: 800;
+    font-size: 24px;
+    color: var(--text);
+    margin: 0;
+  }
+
+  .description {
+    font-family: 'Sora', sans-serif;
+    font-size: 12.5px;
+    line-height: 1.5;
+    color: var(--text-muted);
+    max-width: 360px;
+    margin: 0;
+  }
+
+  .form { display: grid; gap: 12px; }
+
+  label {
+    font-family: 'Sora', sans-serif;
+    font-weight: 500;
+    font-size: 12px;
+    color: var(--text-muted);
+  }
+
+  .blue { color: var(--brand); }
+
+  .forgot-password {
+    margin-top: 2px;
+    font-size: 12px;
+    color: var(--text-muted);
+  }
+
+  .link {
+    font-weight: 700;
+    color: var(--brand);
+    text-decoration: underline;
+    cursor: pointer;
+
+    &:hover {
+      color: var(--accent-color);
+    }
+  }
+
+  .cta {
+    margin-top: 6px;
+    width: 100%;
+    background-color: $blue-primary !important;
+    color: white !important;
+    font-weight: 600;
+    height: 44px;
+    border-radius: 10px;
+    font-size: 14px;
+    letter-spacing: 0.5px;
+
+    &:hover:not(:disabled) {
+      background-color: #3b82f6 !important;
+    }
+
+    &:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+  }
+}
+
+// Material Design field styling
+:host ::ng-deep .sign-in .mat-mdc-form-field {
+  --field-h: 44px;
+  width: 100%;
+}
+
+:host ::ng-deep .sign-in .mat-mdc-text-field-wrapper.mdc-text-field--filled {
+  background: $field-bg;
+  border-radius: 10px;
+  box-shadow: inset 0 0 0 1px rgba(0,0,0,.06);
+  padding: 0 12px;
+}
+
+:host ::ng-deep .sign-in .mdc-line-ripple { display: none; }
+:host ::ng-deep .sign-in .mat-mdc-form-field-focus-overlay { background: transparent; }
+
+:host ::ng-deep .sign-in .mat-mdc-form-field-infix {
+  min-height: var(--field-h);
+  padding: 8px 0;
+}
+
+.prefix {
+  display: inline-grid;
+  place-items: center;
+  margin-right: 8px;
+}
+
+.prefix iconify-icon {
+  font-size: 20px;
+  color: $blue-primary;
+}
+
+.suffix {
+  display: inline-grid;
+  place-items: center;
+  margin-left: 6px;
+  border: 0;
+  background: transparent;
+  padding: 0;
+  cursor: pointer;
+}
+
+.suffix iconify-icon {
+  font-size: 20px;
+  color: $blue-primary;
+}
+
+// Responsivo
+@media (max-width: 968px) {
+  .home {
+    grid-template-columns: 1fr;
+  }
+
+  .side-image {
+    display: none;
+  }
+
+  .content {
+    width: 90%;
+    max-width: 420px;
+  }
+}

@@ -1,0 +1,71 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: sales-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${DB_NAME:-sales_db}
+      POSTGRES_USER: ${DB_USERNAME:-sales}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    networks:
+      - sales-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USERNAME:-sales}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  sales-api:
+    image: ghcr.io/${GITHUB_REPOSITORY_OWNER:-jeniffermorais}/sales-api:latest
+    container_name: sales-api
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    environment:
+      # Database
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_NAME: ${DB_NAME:-sales_db}
+      DB_USERNAME: ${DB_USERNAME:-sales}
+      DB_PASSWORD: ${DB_PASSWORD}
+      DB_MAX_POOL_SIZE: ${DB_MAX_POOL_SIZE:-16}
+
+      # JWT
+      JWT_ISSUER: ${JWT_ISSUER:-sales-api}
+      JWT_EXPIRATION_HOURS: ${JWT_EXPIRATION_HOURS:-24}
+      JWT_INACTIVITY_TIMEOUT_MINUTES: ${JWT_INACTIVITY_TIMEOUT_MINUTES:-15}
+
+      # Email
+      SMTP_FROM: ${SMTP_FROM:-noreply@sales.com}
+      SMTP_HOST: ${SMTP_HOST:-smtp.gmail.com}
+      SMTP_PORT: ${SMTP_PORT:-587}
+      SMTP_USERNAME: ${SMTP_USERNAME}
+      SMTP_PASSWORD: ${SMTP_PASSWORD}
+      SMTP_MOCK: ${SMTP_MOCK:-false}
+
+      # Application
+      APP_URL: ${APP_URL:-http://localhost:8080}
+
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - sales-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/q/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+volumes:
+  postgres-data:
+    driver: local
+
+networks:
+  sales-network:
+    driver: bridge

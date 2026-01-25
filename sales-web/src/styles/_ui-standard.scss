@@ -1,0 +1,488 @@
+$color-bg-surface: #E8E8E8;
+$color-text: #282531;
+$color-border: #262524;
+$color-shadow: rgba(0, 0, 0, .45);
+
+$color-input-bg: #0F0F0F;
+$color-input-text: #eaeaea;
+$color-input-placeholder: #8a8a8a;
+
+$color-brand: #3b82f6;  
+$color-danger: #E5484D;
+
+$radius-md: 8px;
+$radius-sm: 4px;
+
+$z-modal: 1000;
+
+// ===============================
+// MIXINS UTILITÁRIOS
+// ===============================
+@mixin field-40() {
+    .mat-mdc-form-field-flex {
+        height: 40px !important;
+        align-items: center !important;
+    }
+
+    .mat-mdc-form-field-infix {
+        min-height: 40px !important;
+        padding: 0 !important;
+    }
+
+    .mat-mdc-form-field-hint-wrapper, .mat-mdc-form-field-error-wrapper {
+        padding: 0 !important;
+    }
+
+    .mdc-text-field {
+        --mdc-outlined-text-field-container-height: 40px !important;
+    }
+}
+
+.is-placeholder {
+    opacity: .6;
+}
+
+.icon {
+    all: unset;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: $radius-md;
+
+    &:hover {
+        background: rgba(59, 130, 246, .08);
+    }
+}
+
+.form {
+    display: grid;
+    row-gap: 3px;
+}
+
+.field {
+    display: grid;
+    gap: 6px;
+    margin-bottom: 5px;
+}
+
+.field__label {
+    font-family: Roboto;
+    font-weight: 500;
+    font-size: 12px;
+    line-height: 16px;
+    letter-spacing: .5px;
+    color: $color-text;
+}
+
+.modal-root {
+    position: fixed;
+    inset: 0;
+    z-index: $z-modal;
+    display: grid;
+    place-items: center;
+}
+
+.modal-backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, .5);
+}
+
+.modal {
+    position: relative;
+    z-index: 1;
+    box-sizing: border-box;
+    background: $color-bg-surface;
+    color: $color-text;
+    border: 1px solid $color-border;
+    border-radius: $radius-md;
+    box-shadow: 0 24px 48px $color-shadow;
+    animation: modalIn .14s ease-out;
+}
+
+@keyframes modalIn {
+    from {
+        opacity: 0;
+        transform: translateY(-4px) scale(.98)
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1)
+    }
+}
+
+.modal__content {
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    height: 100%;
+    box-sizing: border-box;
+    padding-bottom: 10px !important;
+}
+
+.modal__header {
+    display: grid;
+    grid-template-columns: 32px 1fr 32px;
+    align-items: center;
+    padding: 0;
+
+    .close {
+        grid-column: 3;
+        justify-self: end;
+        width: 32px;
+        height: 32px;
+    }
+}
+
+.modal__title {
+    grid-column: 2;
+    justify-self: center;
+    text-align: center;
+    margin: 0;
+    font-family: Sora;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 20px;
+    letter-spacing: .25px;
+}
+
+.modal__body {
+    box-sizing: border-box;
+}
+
+.modal__footer {
+    padding: 5px;
+    display: flex;
+    gap: 12px;
+    justify-content: space-between;
+
+    >* {
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+    }
+}
+
+.modal .m-field.mat-mdc-form-field {
+    width: 100%;
+    --mdc-outlined-text-field-outline-color: #e2e8f0;
+    --mdc-outlined-text-field-focus-outline-color: #e2e8f0;
+    --mdc-outlined-text-field-label-text-color: #64748b;
+    --mdc-outlined-text-field-focus-label-text-color: #64748b;
+}
+
+.modal .m-field {
+    @include field-40();
+
+    .mat-mdc-form-field-wrapper {
+        padding: 0 0 18px 0 !important;
+    }
+
+    .mat-mdc-form-field-subscript-wrapper {
+        position: static !important;
+        padding: 2px 0 0 0 !important;
+        margin: 0 !important;
+    }
+
+    .mat-mdc-form-field-error-wrapper {
+        padding: 2px !important;
+    }
+
+    .mdc-text-field {
+        background: $color-input-bg;
+        border-radius: $radius-sm !important;
+    }
+
+    .mat-mdc-input-element,
+    .mdc-text-field__input {
+        height: 40px !important;
+        line-height: 40px !important;
+        color: $color-input-text !important;
+        -webkit-text-fill-color: $color-input-text !important;
+    }
+
+
+    .m-select .mat-mdc-form-field-infix {
+        min-height: 40px !important;
+        padding: 0 !important;
+    }
+
+    .m-select .mat-mdc-form-field-flex {
+        height: 40px !important;
+        align-items: center !important;
+    }
+
+    &.is-empty .mat-mdc-input-element {
+        color: $color-input-placeholder !important;
+        -webkit-text-fill-color: $color-input-placeholder !important;
+    }
+
+    .mat-mdc-input-element::placeholder,
+    .mdc-text-field__input::placeholder {
+        color: $color-input-placeholder !important;
+        opacity: 1;
+    }
+
+    .mat-mdc-input-element,
+    .mat-mdc-select-trigger {
+        color: $color-input-text;
+        caret-color: $color-brand;
+    }
+
+    .mat-mdc-input-element:-webkit-autofill,
+    .mat-mdc-input-element:-webkit-autofill:hover,
+    .mat-mdc-input-element:-webkit-autofill:focus {
+        -webkit-text-fill-color: $color-input-text;
+        box-shadow: 0 0 0 1000px $color-input-bg inset;
+        transition: background-color 9999s ease-in-out 0s;
+    }
+
+    .mdc-notched-outline__leading,
+    .mdc-notched-outline__notch,
+    .mdc-notched-outline__trailing {
+        border-color: $color-border !important;
+    }
+
+    &.mat-focused .mdc-notched-outline__leading,
+    &.mat-focused .mdc-notched-outline__notch,
+    &.mat-focused .mdc-notched-outline__trailing {
+        border-color: $color-border !important;
+    }
+
+    &.mat-mdc-form-field-invalid .mdc-notched-outline__leading,
+    &.mat-mdc-form-field-invalid .mdc-notched-outline__notch,
+    &.mat-mdc-form-field-invalid .mdc-notched-outline__trailing {
+        border-color: $color-danger !important;
+    }
+
+    .mat-mdc-form-field-error {
+        color: $color-danger !important;
+        font: 400 12px/16px Roboto, Arial, sans-serif;
+        margin-top: 2px;
+    }
+}
+
+.modal .form.g2 {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: 16px;
+    row-gap: 12px;
+}
+
+.m-select {
+    .mat-mdc-form-field-wrapper {
+        padding: 0 !important;
+    }
+
+    @include field-40();
+
+    .mdc-text-field {
+        background: $color-input-bg;
+        border-radius: $radius-sm !important;
+        outline: none !important;
+    }
+
+    &.mat-mdc-form-field {
+        --mdc-outlined-text-field-outline-color: #e2e8f0 !important;
+        --mdc-outlined-text-field-focus-outline-color: #e2e8f0 !important;
+        --mdc-outlined-text-field-label-text-color: #64748b !important;
+        --mdc-outlined-text-field-focus-label-text-color: #64748b !important;
+    }
+
+    .mdc-text-field--outlined:not(.mdc-text-field--disabled).mdc-text-field--focused .mat-mdc-notch-piece {
+        border-color: #64748b !important;
+    }
+
+    .mat-mdc-form-field-focus-overlay {
+        background: transparent !important;
+    }
+
+    .mat-mdc-select-trigger {
+        color: $color-input-text;
+        height: 40px;
+        display: flex;
+        align-items: center;
+    }
+
+    &.is-empty .mat-mdc-select-trigger {
+        color: $color-input-placeholder !important;
+    }
+
+    &.is-empty .mat-mdc-select-trigger::before {
+        content: 'Selecione';
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        pointer-events: none;
+        color: $color-input-placeholder;
+    }
+
+    &.is-empty .mat-mdc-select-value {
+        opacity: 0;
+    }
+
+    .mat-mdc-select-arrow {
+        color: $color-brand;
+        width: 20px;
+        height: 20px;
+        background-color: currentColor;
+        -webkit-mask: url("data:image/svg+xml;utf8,\
+<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'>\
+<path d='M7.41 8.59 12 13.17 16.59 8.59 18 10l-6 6-6-6z' fill='black'/>\
+</svg>") center / 18px 18px no-repeat;
+        mask: url("data:image/svg+xml;utf8,\
+<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'>\
+<path d='M7.41 8.59 12 13.17 16.59 8.59 18 10l-6 6-6-6z' fill='black'/>\
+</svg>") center / 18px 18px no-repeat;
+
+        .select-chevron {
+            display: none !important;
+        }
+    }
+}
+
+.m-select-panel,
+.cdk-overlay-container .m-select-panel,
+.cdk-overlay-container .m-select-panel .mdc-list,
+.cdk-overlay-container .m-select-panel .mdc-deprecated-list {
+    background: $color-input-bg !important;
+    color: $color-input-text !important;
+}
+
+.cdk-overlay-container .m-select-panel .mdc-list-item__primary-text {
+    color: $color-input-text !important;
+}
+
+.cdk-overlay-container .m-select-panel .mat-mdc-option.mdc-list-item--selected .mdc-list-item__primary-text {
+    color: $color-input-text !important;
+}
+
+.m-select,
+.m-select-panel {
+    --mdc-theme-primary: #{$color-brand} !important;
+}
+
+.cdk-overlay-container .m-select-panel .mat-mdc-option.mdc-list-item--selected .mdc-list-item__end svg {
+    color: $color-brand !important;
+    fill: $color-brand !important;
+}
+
+.mat-mdc-option .mat-pseudo-checkbox,
+.mat-pseudo-checkbox-minimal-selected-checkmark-color {
+    --mat-pseudo-checkbox-minimal-selected-checkmark-color: #{$color-brand} !important;
+}
+
+.mat-mdc-option .mdc-list-item__primary-text {
+    font-family: 'Sora', system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
+    font-weight: 400;
+    font-size: 14px !important;
+}
+
+.mat-mdc-select-value-text {
+    font-family: 'Sora', system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
+    font-weight: 400;
+    font-size: 14px !important;
+}
+
+.confirm-body {
+    display: grid;
+    grid-template-columns: 36px 1fr;
+    gap: 12px;
+    padding: 8px 5px 0 5px;
+}
+
+.confirm-icon-delete {
+    width: 56px;
+    height: 56px;
+    display: grid;
+    place-items: center;
+    color: $color-danger;
+}
+
+.confirm-center-delete {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 12px;
+}
+
+.confirm-heading {
+    margin: 6px 0 0;
+    font: 600 20px/26px Sora, system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
+    color: $color-text;
+}
+
+.confirm-sub {
+    margin: 0;
+    font: 400 14px/20px Roboto, Arial, sans-serif;
+    color: #64748b;
+}
+
+.modal .m-field .mdc-text-field,
+.m-select .mat-mdc-select-trigger {
+    outline: none !important;
+}
+
+.modal .m-field .mdc-text-field:focus,
+.modal .m-field .mdc-text-field:focus-visible,
+.m-select .mat-mdc-select-trigger:focus,
+.m-select .mat-mdc-select-trigger:focus-visible {
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+.modal .m-field .mdc-notched-outline__leading,
+.modal .m-field .mdc-notched-outline__notch,
+.modal .m-field .mdc-notched-outline__trailing,
+.m-select .mdc-notched-outline__leading,
+.m-select .mdc-notched-outline__notch,
+.m-select .mdc-notched-outline__trailing {
+    border-color: $color-border !important;
+}
+
+.modal .m-field.mat-focused .mdc-notched-outline__leading,
+.modal .m-field.mat-focused .mdc-notched-outline__notch,
+.modal .m-field.mat-focused .mdc-notched-outline__trailing,
+.m-select.mat-focused .mdc-notched-outline__leading,
+.m-select.mat-focused .mdc-notched-outline__notch,
+.m-select.mat-focused .mdc-notched-outline__trailing,
+.m-select.mat-mdc-form-field.mat-focused .mdc-notched-outline__leading,
+.m-select.mat-mdc-form-field.mat-focused .mdc-notched-outline__notch,
+.m-select.mat-mdc-form-field.mat-focused .mdc-notched-outline__trailing {
+    border-color: $color-border !important;
+}
+
+.modal .m-field.mat-mdc-form-field-appearance-fill .mdc-line-ripple::before,
+.modal .m-field.mat-mdc-form-field-appearance-fill .mdc-line-ripple::after,
+.m-select.mat-mdc-form-field-appearance-fill .mdc-line-ripple::before,
+.m-select.mat-mdc-form-field-appearance-fill .mdc-line-ripple::after {
+    background-color: $color-border !important;
+}
+
+.mdc-text-field--outlined:not(.mdc-text-field--disabled).mdc-text-field--focused .mdc-notched-outline__leading,
+.mdc-text-field--outlined:not(.mdc-text-field--disabled).mdc-text-field--focused .mdc-notched-outline__notch,
+.mdc-text-field--outlined:not(.mdc-text-field--disabled).mdc-text-field--focused .mdc-notched-outline__trailing {
+    border-color: $color-border !important;
+}
+
+.m-select .mat-mdc-select-trigger .mat-mdc-select-arrow,
+.m-select.mat-mdc-form-field.mat-focused .mat-mdc-select-trigger .mat-mdc-select-arrow,
+.m-select.mat-mdc-form-field.mdc-text-field--focused .mat-mdc-select-trigger .mat-mdc-select-arrow,
+.mdc-text-field--outlined .mat-mdc-select-arrow,
+.mdc-text-field--outlined.mdc-text-field--focused .mat-mdc-select-arrow,
+.m-select .mat-mdc-select-arrow,
+.m-select .mat-mdc-select-arrow svg {
+    color: $color-brand !important;
+    fill: $color-brand !important;
+    background-color: currentColor !important;
+}
+
+
+.m-select.mat-mdc-form-field,
+.m-select.mat-mdc-form-field.mat-focused {
+    --mat-select-arrow-color: #{$color-brand} !important;
+}

@@ -1,0 +1,35 @@
+name: Deploy Frontend to Render
+
+on:
+  workflow_run:
+    workflows: ["Build and Push Frontend Docker Image"]
+    types:
+      - completed
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Trigger Render Deploy
+        run: |
+          if [ -n "${{ secrets.RENDER_DEPLOY_HOOK_URL_FRONTEND }}" ]; then
+            echo "Triggering Render deployment..."
+            curl -X POST "${{ secrets.RENDER_DEPLOY_HOOK_URL_FRONTEND }}"
+            echo "Deploy triggered successfully!"
+          else
+            echo "⚠️  RENDER_DEPLOY_HOOK_URL_FRONTEND secret not configured"
+            echo "Add the secret in: Repository Settings → Secrets → Actions"
+            exit 0
+          fi
+
+      - name: Deployment status
+        run: |
+          echo "✅ Frontend deployment triggered"
+          echo "Check status at: https://dashboard.render.com"

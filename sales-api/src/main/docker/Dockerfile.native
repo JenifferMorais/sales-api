@@ -1,0 +1,28 @@
+####
+# Este Dockerfile é usado para criar uma imagem nativa da aplicação Quarkus.
+# Requer GraalVM para compilação nativa.
+#
+# Build nativo antes de criar a imagem:
+#   ./mvnw package -Pnative
+#
+# Build da imagem:
+#   docker build -f src/main/docker/Dockerfile.native -t sales-api:native .
+#
+# Executar a imagem:
+#   docker run -i --rm -p 8080:8080 sales-api:native
+#
+###
+FROM registry.access.redhat.com/ubi8/ubi-minimal:8.9
+
+WORKDIR /work/
+
+# Copiar executável nativo
+COPY --chown=1001:root target/*-runner /work/application
+
+# Configurar permissões
+RUN chmod 775 /work/application
+
+EXPOSE 8080
+USER 1001
+
+ENTRYPOINT ["./application", "-Dquarkus.http.host=0.0.0.0"]

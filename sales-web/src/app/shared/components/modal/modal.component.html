@@ -1,0 +1,31 @@
+<div class="modal-root" *ngIf="open">
+  <div class="modal-backdrop" (click)="onBackdropClick($event)"></div>
+
+  <div #dialog class="modal" role="dialog" aria-modal="true" [attr.aria-label]="title || null" tabindex="-1"
+    [style.width]="toCss(width)" [style.height]="toCss(height)" [style.min-width]="width ? toCss(width) : null"
+    [style.max-width]="width ? toCss(width) : 'calc(100% - 32px)'" [style.min-height]="height ? toCss(height) : null"
+    [style.max-height]="height ? toCss(height) : 'calc(100vh - 32px)'" [style.top]="toCss(top)"
+    [style.left]="toCss(left)" [style.position]="(top!=null || left!=null) ? 'fixed' : null"
+    [style.border-radius]="toCss(radius)" [style.background]="background || null" [style.border]="borderColor ? ('1px solid ' + borderColor) : null">
+
+
+    <div class="modal__content" [style.padding]="toCss(padding)">
+
+      <header class="modal__header">
+        <h2 class="modal__title">{{ title }}</h2>
+        <button class="icon close" type="button" aria-label="Fechar" (click)="close.emit()">
+          <iconify-icon icon="mdi:close" width="20" height="20"></iconify-icon>
+        </button>
+      </header>
+
+      <section class="modal__body">
+        <ng-content select="[modalBody]"></ng-content>
+      </section>
+
+      <footer class="modal__footer">
+        <ng-content select="[modalFooter]"></ng-content>
+      </footer>
+
+    </div>
+  </div>
+</div>

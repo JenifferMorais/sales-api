@@ -1,0 +1,21 @@
+<div class="alert-host">
+  <div
+    class="alert"
+    *ngFor="let a of items; trackBy: trackById"
+    [class.-success]="a.color === 'success'"
+    [class.-danger]="a.color === 'danger'"
+    [class.-warning]="a.color === 'warning'"
+    [class.-primary]="a.color === 'primary'"
+    [style.border-left-color]="a.color && !(a.color==='success'||a.color==='danger'||a.color==='warning'||a.color==='primary') ? a.color : null"
+  >
+    <div class="alert__icon">
+      <iconify-icon [icon]="a.icon || 'mdi:information-outline'" width="22" height="22"></iconify-icon>
+    </div>
+
+    <div class="alert__text">{{ a.text }}</div>
+
+    <button class="alert__close" (click)="close(a.id)" aria-label="Fechar">
+      <iconify-icon icon="mdi:close" width="18" height="18"></iconify-icon>
+    </button>
+  </div>
+</div>

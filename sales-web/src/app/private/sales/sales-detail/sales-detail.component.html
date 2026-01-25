@@ -1,0 +1,125 @@
+<section class="page" *ngIf="!loading && sale">
+  <div class="admin-head">
+    <div>
+      <small class="crumb">VENDAS</small>
+      <h1 class="title">Detalhes da Venda</h1>
+    </div>
+  </div>
+
+  <div class="hero">
+    <div class="avatar">
+      <iconify-icon icon="mdi:cart" width="48" height="48"></iconify-icon>
+    </div>
+
+    <div class="cols">
+      <div class="col">
+        <div class="field">
+          <span class="label">Código</span>
+          <span class="value">{{ sale.code }}</span>
+        </div>
+      </div>
+      <div class="col">
+        <div class="field">
+          <span class="label">Cliente</span>
+          <span class="value">{{ sale.customerName }}</span>
+        </div>
+      </div>
+      <div class="col">
+        <div class="field">
+          <span class="label">Data</span>
+          <span class="value">{{ sale.createdAt | date:'dd/MM/yyyy HH:mm' }}</span>
+        </div>
+      </div>
+      <div class="col">
+        <div class="field">
+          <span class="label">Vendedor</span>
+          <span class="value">{{ sale.sellerName }}</span>
+        </div>
+      </div>
+    </div>
+
+    <button class="btn-edit" (click)="editSale()">
+      <iconify-icon icon="mdi:pencil" width="20" height="20"></iconify-icon>
+    </button>
+  </div>
+
+  <div class="card">
+    <h3 class="card__title">Informações de Pagamento</h3>
+
+    <div class="info-grid">
+      <div class="info-item">
+        <span class="info-label">Forma de pagamento</span>
+        <span class="info-value">{{ getPaymentMethodLabel(sale.paymentMethod) }}</span>
+      </div>
+
+      <div class="info-item" *ngIf="sale.cardNumber">
+        <span class="info-label">Número do cartão</span>
+        <span class="info-value">{{ sale.cardNumber }}</span>
+      </div>
+
+      <div class="info-item">
+        <span class="info-label">Subtotal</span>
+        <span class="info-value">{{ sale.subtotal | currency:'BRL' }}</span>
+      </div>
+
+      <div class="info-item">
+        <span class="info-label">Taxa</span>
+        <span class="info-value">{{ sale.taxAmount | currency:'BRL' }}</span>
+      </div>
+
+      <div class="info-item">
+        <span class="info-label">Total</span>
+        <span class="info-value highlight">{{ sale.totalAmount | currency:'BRL' }}</span>
+      </div>
+
+      <div class="info-item">
+        <span class="info-label">Valor pago</span>
+        <span class="info-value">{{ sale.amountPaid | currency:'BRL' }}</span>
+      </div>
+
+      <div class="info-item" *ngIf="sale.change > 0">
+        <span class="info-label">Troco</span>
+        <span class="info-value">{{ sale.change | currency:'BRL' }}</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3 class="card__title">Itens da Venda</h3>
+
+    <div class="table-container">
+      <table class="items-table">
+        <thead>
+          <tr>
+            <th>Código</th>
+            <th>Produto</th>
+            <th>Quantidade</th>
+            <th>Preço unitário</th>
+            <th>Subtotal</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of sale.items">
+            <td>{{ item.productCode }}</td>
+            <td>{{ item.productName }}</td>
+            <td>{{ item.quantity }}</td>
+            <td>{{ item.unitPrice | currency:'BRL' }}</td>
+            <td>{{ item.quantity * item.unitPrice | currency:'BRL' }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="actions">
+    <app-button styleClass="btn-outline" (clicked)="goBack()">Voltar</app-button>
+    <app-button styleClass="btn-green" (clicked)="editSale()">Editar</app-button>
+  </div>
+</section>
+
+<section class="page" *ngIf="loading">
+  <div class="loading-container">
+    <iconify-icon icon="mdi:loading" class="spin" width="48" height="48"></iconify-icon>
+    <p>Carregando...</p>
+  </div>
+</section>

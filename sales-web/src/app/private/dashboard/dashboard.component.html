@@ -1,0 +1,148 @@
+<section class="admin-dashboard">
+  <div class="admin-head">
+    <div>
+      <small class="crumb">DASHBOARD</small>
+      <h1 class="title">Dashboard</h1>
+    </div>
+    <div class="admin-filters">
+      <button class="admin-range" (click)="toggleRangeMenu()" [disabled]="isLoading" aria-haspopup="listbox">
+        {{ dateRangeLabel }}
+        <iconify-icon icon="mdi:menu-down" width="20" height="20"></iconify-icon>
+      </button>
+      <div class="range-options" *ngIf="isRangeMenuOpen" role="listbox">
+        <button *ngFor="let r of dateRanges" [class.active]="r.key === selectedRange" (click)="onRangeChange(r.key)" role="option">
+          {{ r.label }}
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Loading Indicator -->
+  <div *ngIf="isLoading" style="display: flex; justify-content: center; align-items: center; min-height: 400px; opacity: 0.7;">
+    <div style="text-align: center;">
+      <iconify-icon icon="mdi:loading" width="48" height="48" style="animation: spin 1s linear infinite;"></iconify-icon>
+      <p style="margin-top: 16px; color: #666;">Carregando dados do dashboard...</p>
+    </div>
+  </div>
+
+  <div class="admin-cards" *ngIf="!isLoading">
+    <div class="admin-card">
+      <div class="admin-card__value">{{ stats.totalSales }}</div>
+      <div class="admin-card__caption">Total de Vendas</div>
+      <div class="admin-card__trend" [class.negative]="stats.salesVariation < 0">
+        {{ formatVariation(stats.salesVariation) }}
+      </div>
+      <div class="admin-card__icon">
+        <iconify-icon icon="mdi:cart-outline" width="32" height="32"></iconify-icon>
+      </div>
+    </div>
+
+    <div class="admin-card">
+      <div class="admin-card__value">R$ {{ stats.totalRevenue | number:'1.2-2' }}</div>
+      <div class="admin-card__caption">Receita Total</div>
+      <div class="admin-card__trend" [class.negative]="stats.revenueVariation < 0">
+        {{ formatVariation(stats.revenueVariation) }}
+      </div>
+      <div class="admin-card__icon">
+        <iconify-icon icon="mdi:currency-usd" width="32" height="32"></iconify-icon>
+      </div>
+    </div>
+
+    <div class="admin-card">
+      <div class="admin-card__value">{{ stats.totalCustomers }}</div>
+      <div class="admin-card__caption">Total de Clientes</div>
+      <div class="admin-card__trend" [class.negative]="stats.customersVariation < 0">
+        {{ formatVariation(stats.customersVariation) }}
+      </div>
+      <div class="admin-card__icon">
+        <iconify-icon icon="mdi:account-group-outline" width="32" height="32"></iconify-icon>
+      </div>
+    </div>
+  </div>
+
+  <div class="admin-grid" *ngIf="!isLoading">
+    <div class="admin-chart-card">
+      <div class="admin-chart-card__header">
+        <h3>Vendas x Receita</h3>
+      </div>
+      <div class="admin-chart">
+        <div class="chart-grid"></div>
+        <div class="admin-chart__pair" *ngFor="let point of chartData; let i = index">
+          <div class="admin-bars">
+            <div class="bar sales" [style.height]="barHeight(point.sales)" [attr.data-value]="point.sales"
+              (mouseenter)="onBarEnter(point.sales, i, 'sales')" (mouseleave)="onBarLeave()"></div>
+            <div class="bar revenue" [style.height]="barHeight(point.revenue / 100)" [attr.data-value]="'R$ ' + point.revenue"
+              (mouseenter)="onBarEnter(point.revenue, i, 'revenue')" (mouseleave)="onBarLeave()"></div>
+          </div>
+          <span class="month">
+            <span class="month-label">{{ point.shortMonth }}</span>
+            <span class="year-label" *ngIf="point.year">{{ point.year }}</span>
+          </span>
+        </div>
+      </div>
+      <div class="legend">
+        <span><span class="legend-box legend-sales"></span>Vendas</span>
+        <span><span class="legend-box legend-revenue"></span>Receita (R$)</span>
+      </div>
+    </div>
+
+    <div class="admin-complaints">
+      <div class="admin-complaints__header">
+        <h3>Vendas Recentes</h3>
+        <button type="button" routerLink="/sales">Ver todas</button>
+      </div>
+      <div class="admin-complaints__list">
+        <div class="complaint-card" *ngFor="let sale of recentSales">
+          <div class="complaint-card__icon">
+            <iconify-icon icon="mdi:receipt-text-outline" width="22" height="22"></iconify-icon>
+          </div>
+          <div class="complaint-card__content">
+            <strong>{{ sale.customer }}</strong>
+            <p>{{ sale.product }}</p>
+            <small>R$ {{ sale.amount | number:'1.2-2' }} - {{ sale.date }}</small>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="admin-reports-grid" *ngIf="!isLoading">
+    <div class="admin-complaints">
+      <div class="admin-complaints__header">
+        <h3>Maior Faturamento</h3>
+        <button type="button" routerLink="/products">Ver produtos</button>
+      </div>
+      <div class="admin-complaints__list">
+        <div class="complaint-card" *ngFor="let product of topRevenueProducts">
+          <div class="complaint-card__icon">
+            <iconify-icon icon="mdi:trending-up" width="22" height="22"></iconify-icon>
+          </div>
+          <div class="complaint-card__content">
+            <strong>{{ product.productName }}</strong>
+            <p>Código: {{ product.productCode }}</p>
+            <small>Preço: R$ {{ product.salePrice | number:'1.2-2' }} - Total: R$ {{ product.totalRevenue | number:'1.2-2' }}</small>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="admin-complaints">
+      <div class="admin-complaints__header">
+        <h3>Produtos Encalhados</h3>
+        <button type="button" routerLink="/products">Ver produtos</button>
+      </div>
+      <div class="admin-complaints__list">
+        <div class="complaint-card" *ngFor="let product of oldestProducts">
+          <div class="complaint-card__icon">
+            <iconify-icon icon="mdi:clock-alert-outline" width="22" height="22"></iconify-icon>
+          </div>
+          <div class="complaint-card__content">
+            <strong>{{ product.name }}</strong>
+            <p>Peso: {{ product.weight }}g</p>
+            <small>Compra: R$ {{ product.purchasePrice | number:'1.2-2' }} - Cadastro: {{ formatDateShort(product.registrationDate) }}</small>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

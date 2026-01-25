@@ -1,0 +1,9 @@
+.field.error .control--input input,
+.field.error .control--input textarea,
+.field.error .control--select select {
+  border-color: #ef4444;
+}
+
+.field.error label {
+  color: #ef4444;
+}

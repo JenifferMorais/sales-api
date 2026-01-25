@@ -1,0 +1,57 @@
+# Node
+node_modules
+npm-debug.log
+yarn-error.log
+
+# Angular
+dist
+.angular
+.sass-cache
+
+# IDE
+.vscode
+.idea
+*.swp
+*.swo
+*.swn
+.DS_Store
+
+# Tests
+coverage
+*.spec.ts
+e2e
+karma.conf.js
+protractor.conf.js
+
+# Documentation
+README.md
+*.md
+docs
+
+# Git
+.git
+.gitignore
+.gitattributes
+
+# CI/CD
+.github
+
+# Environment
+.env
+.env.*
+
+# Docker
+Dockerfile
+docker-compose*.yml
+.dockerignore
+
+# Exceções necessárias para o build
+!docker/prod/nginx.conf
+!docker/docker-entrypoint.sh
+
+# Logs
+*.log
+logs
+
+# OS
+Thumbs.db

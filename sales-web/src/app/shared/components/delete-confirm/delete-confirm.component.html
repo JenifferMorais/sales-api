@@ -1,0 +1,36 @@
+<div class="modal-root" *ngIf="open">
+  <div class="modal-backdrop" (click)="onBackdropClick($event)"></div>
+
+  <div class="modal-dialog" role="dialog" aria-modal="true" [attr.aria-label]="title">
+    <div class="modal-content">
+      <div class="modal-header">
+        <div class="modal-icon modal-icon--danger">
+          <iconify-icon icon="mdi:alert-circle-outline" width="32" height="32"></iconify-icon>
+        </div>
+        <h2 class="modal-title">{{ title }}</h2>
+      </div>
+
+      <div class="modal-body">
+        <p>{{ message }}</p>
+      </div>
+
+      <div class="modal-footer">
+        <button
+          class="btn btn--outline"
+          type="button"
+          (click)="onClose()"
+          [disabled]="loading">
+          Cancelar
+        </button>
+        <button
+          class="btn btn--danger"
+          type="button"
+          (click)="onConfirm()"
+          [disabled]="loading">
+          <span *ngIf="loading">Excluindo...</span>
+          <span *ngIf="!loading">Confirmar Exclusão</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,62 @@
+# Maven
+target/
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+dependency-reduced-pom.xml
+buildNumber.properties
+.mvn/timing.properties
+.mvn/wrapper/maven-wrapper.jar
+
+# Eclipse
+.project
+.classpath
+.settings/
+bin/
+
+# IntelliJ
+.idea/
+*.ipr
+*.iml
+*.iws
+
+# NetBeans
+nb-configuration.xml
+
+# Visual Studio Code
+.vscode/
+*.code-workspace
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Quarkus
+.quarkus/
+
+# Logs
+*.log
+
+# H2 Database
+*.db
+
+# Environment variables and secrets
+.env
+.env.local
+.env.*.local
+*.env
+application-local.properties
+application-*.properties
+
+# Secrets and credentials
+secrets/
+credentials/
+*.key
+*.p12
+*.jks
+
+# JWT Keys (NÃO commitar chaves privadas!)
+src/main/resources/META-INF/resources/privateKey.pem
+src/main/resources/META-INF/resources/publicKey.pem

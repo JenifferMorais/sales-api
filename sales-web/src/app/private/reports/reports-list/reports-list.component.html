@@ -1,0 +1,33 @@
+<section class="page">
+  <div class="admin-head">
+    <div>
+      <small class="crumb">RELATÓRIOS</small>
+      <h1 class="title">Faturamento Mensal</h1>
+    </div>
+  </div>
+
+  <header class="toolbar">
+    <app-filter-bar
+      class="toolbar__left"
+      [placeholder]="'Buscar relatórios...'"
+      [(textSearch)]="searchQuery"
+      (searchChange)="onSearch($event)">
+    </app-filter-bar>
+
+    <div class="toolbar__right">
+      <app-button  (clicked)="exportReport()">
+        Exportar Relatório
+      </app-button>
+    </div>
+  </header>
+
+  <app-data-table-outline
+    [columns]="columns"
+    [data]="filteredData"
+    [rowActions]="rowActions"
+    [totalItems]="totalItems"
+    [pageSize]="pageSize"
+    [pageIndex]="pageIndex"
+    (pageChange)="onPage($event)">
+  </app-data-table-outline>
+</section>

@@ -1,0 +1,61 @@
+<table class="table mat-mdc-table" mat-table [dataSource]="tableDataSource" matSort>
+  <ng-container *ngFor="let col of columns" [matColumnDef]="col.key">
+
+    <!--   <th mat-header-cell *matHeaderCellDef [mat-sort-header]="col.sortable ? '' : null"
+        [style.width]="col.width || null">
+      {{ col.label }}
+    </th> -->
+
+    <th mat-header-cell *matHeaderCellDef [style.width]="col.width || null">
+      {{ col.label }}
+    </th>
+
+    <td mat-cell *matCellDef="let element" [class.align-right]="col.align === 'right'"
+      [class.align-center]="col.align === 'center'">
+      <ng-container *ngIf="!col.isActions; else actionsCell">
+        <span class="cell-text ellipsis" #cell [matTooltip]="formatCell(element, col)"
+          [matTooltipDisabled]="!isOverflow(cell)" matTooltipShowDelay="250">
+          {{ formatCell(element, col) }}
+        </span>
+      </ng-container>
+
+      <ng-template #actionsCell>
+        <mat-icon class="more-trigger" matTooltip="Mais opções" matTooltipPosition="above" matTooltipShowDelay="250"
+          (click)="$event.stopPropagation(); setCurrentRow(element)" [matMenuTriggerFor]="rowMenu"
+          aria-label="Mais ações">
+          more_horiz
+        </mat-icon>
+      </ng-template>
+    </td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="displayed"></tr>
+  <tr mat-row class="table-row" *matRowDef="let row; columns: displayed" (click)="rowClick.emit(row)">
+  </tr>
+</table>
+
+<mat-menu #rowMenu="matMenu" [panelClass]="'row-menu themed-menu'">
+  <ng-container *ngFor="let a of rowActions">
+    <button mat-menu-item *ngIf="!a.showAction || a.showAction(currentRow)" (click)="a.onClick?.(currentRow)"
+      [ngClass]="a.tone ? 'tone-' + a.tone : null">
+      <mat-icon *ngIf="a.icon">{{ a.icon }}</mat-icon>
+      {{ a.textFactory ? a.textFactory(currentRow) : a.text }}
+    </button>
+  </ng-container>
+</mat-menu>
+
+
+<div class="paginator" *ngIf="length > pageSize">
+  <button class="circle" [class.disabled]="pageIndex === 0" (click)="prev()">
+    <mat-icon>chevron_left</mat-icon>
+  </button>
+
+  <button *ngFor="let it of items" class="circle" [class.dots]="it === '…'" [class.active]="it === pageIndex + 1"
+    [disabled]="it === '…'" (click)="it === '…' ? null : selectPage(+it)">
+    <span>{{ it }}</span>
+  </button>
+
+  <button class="circle" [class.disabled]="pageIndex >= totalPages - 1" (click)="next()">
+    <mat-icon>chevron_right</mat-icon>
+  </button>
+</div>

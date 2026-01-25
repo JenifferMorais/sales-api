@@ -1,0 +1,138 @@
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@100..900&family=Poppins:wght@100..900&display=swap");
+
+@mixin export-theme($map) {
+  @each $k, $v in $map {
+    --#{$k}: #{$v};
+  }
+}
+
+$primary: #1e40af;
+$primary-dashboard: #3b82f6;
+$primary-border: #3b82f6;
+$blue: #183f8a;
+$secondary: #000000;
+$color-white: #fff;
+$color-background: #fff;
+$color-background-home: #1e1e1e;
+$color-background-drawer: #ededed;
+$color-label: #707070;
+
+$color-primary: $primary;
+$color-text-default: $secondary;
+
+$font-size: 14px;
+$font-montserrat: "Montserrat", sans-serif;
+$font-poppins: "Poppins", sans-serif;
+
+$theme-light: (
+  brand-50: #f6f9fe,
+  brand-100: #eaf2fd,
+  brand-600: #1e40af,
+  brand-700: #1e3a8a,
+  brand-800: #1e3a8a,
+  brand-900: #1e293b,
+  yellow-500: #3b82f6,
+  yellow-600: #2563eb,
+  danger-500: #e5484d,
+  warning-500: #f1a10d,
+  success-500: #30a46c,
+  success-700: #1f5e4a,
+  info-500: #0ea5e9,
+  surface: #ffffff,
+  surface-2: #f7f7f8,
+  surface-3:#F5F5F5,
+  text: #111111,
+  text-muted: #667085,
+  border: #e4e6eb,
+  sidebar-bg: #e8e8e8a1,
+  sidebar-active-bg: #1e40af,
+  sidebar-hover-bg: #dfe3e6,
+  sidebar-text: #282531,
+  select-bg: #F5F5F5,
+  search-bg: #E1E2E6,
+);
+
+$theme-dark: (
+  brand-50: #0b0b0b,
+  brand-100: #020202,
+  brand-600: #3b82f6,
+  brand-700: #2563eb,
+  brand-800: #1e40af,
+  brand-900: #1e3a8a,
+  yellow-500: #3b82f6,
+  // Azul substituindo amarelo
+  danger-500: #ff6369,
+  warning-500: #ffb224,
+  success-500: #3dd68c,
+  success-700: #1f5e4a,
+  info-500: #38bdf8,
+  surface: #0F0F0F,
+  surface-2: #262524,
+  surface-3:#070101,
+  text: #eaeaea,
+  text-muted: #B6BAC3,
+  border: #323335,
+  sidebar-bg: #667085,
+  sidebar-active-bg: #1e40af,
+  sidebar-hover-bg: #dfe3e6,
+  sidebar-text: #282531,
+  select-bg: #F5F5F5,
+  search-bg: #E1E2E6,
+);
+
+:root {
+  @include export-theme($theme-light);
+  --bg-login: linear-gradient(135deg, var(--brand-700) 0%, var(--brand-800) 40%, var(--brand-600) 100%);
+  --accent-color: #1e40af;
+
+  --modal-bg: var(--surface);
+  --modal-text: var(--text);
+  --modal-border: var(--border);
+  --modal-shadow: 0 24px 48px rgba(0, 0, 0, .20);
+  --modal-backdrop: rgba(10, 10, 10, .45);
+
+  --modal-input-bg: #ffffff;
+  --modal-input-text: #111111;
+  --modal-input-placeholder: #9ca3af;
+  --modal-input-border: var(--border);
+
+  --bg-input: var(surface-3);
+
+  --modal-brand: #3b82f6;
+  --modal-danger: #e5484d;
+  --modal-muted: var(--text-muted);
+
+  --font-head: "Poppins", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  --font-body: "Inter", Roboto, Arial, sans-serif;
+}
+
+[data-theme="dark"] {
+  --accent-color: #1e40af;
+  --surface: #0F0F0F;
+  --surface-2: #121212;
+  --panel: #121212;
+  --input: #151515;
+  --input-border: #272727;
+  --input-placeholder: #8B8B8B;
+  --text: #F2F2F2;
+  --text-muted: #B6BAC3;
+  --border: #272727;
+  --brand-700: #2563eb;
+  --yellow-500: #3b82f6;
+  --bg-login: var(--surface);
+
+  --modal-bg: #171716;
+  --modal-text: #F5F2EB;
+  --modal-border: #262524;
+  --modal-shadow: 0 24px 48px rgba(0, 0, 0, .45);
+  --modal-backdrop: rgba(0, 0, 0, .50);
+
+  --modal-input-bg: #0F0F0F;
+  --modal-input-text: #eaeaea;
+  --modal-input-placeholder: #8a8a8a;
+  --modal-input-border: #262524;
+
+  --modal-brand: #3b82f6;
+  --modal-danger: #ff6369;
+  --modal-muted: var(--text-muted);
+}

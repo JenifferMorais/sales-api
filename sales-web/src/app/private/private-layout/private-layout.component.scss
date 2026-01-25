@@ -1,0 +1,40 @@
+:host {
+  display: block;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+.layout {
+  display: flex;
+  min-height: calc(100vh - 56px);
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+.layout-sidebar {
+  flex-shrink: 0;
+}
+
+.layout-main {
+  flex: 1;
+  padding: 24px;
+  background: var(--bg);
+  overflow-y: auto;
+}
+
+@media (max-width: 768px) {
+  .layout {
+    flex-direction: column;
+  }
+
+  .layout-sidebar {
+    position: fixed;
+    top: 56px;
+    left: 0;
+    bottom: 0;
+    z-index: 50;
+    box-shadow: 2px 0 8px rgba(0, 0, 0, 0.1);
+  }
+}

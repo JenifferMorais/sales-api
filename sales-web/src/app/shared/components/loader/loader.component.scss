@@ -1,0 +1,23 @@
+:host { position: fixed; inset: 0; pointer-events: none; z-index: 99999; }
+
+.loader-overlay {
+  position: fixed;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  background: rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(2px);
+  pointer-events: none; /* não bloqueia cliques/hover em overlays do header */
+  z-index: 99999; /* acima de todo o conteúdo, incluindo modals e data-tables */
+}
+
+.spinner {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 3px solid rgba(255, 176, 32, 0.25);
+  border-top-color: #FFB020;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }

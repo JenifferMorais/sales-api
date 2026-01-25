@@ -1,0 +1,29 @@
+name: Deploy to Render
+
+on:
+  workflow_run:
+    workflows: ["Build and Push Docker Image"]
+    types:
+      - completed
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+
+    steps:
+      - name: Trigger Render Deploy
+        run: |
+          curl -X POST "${{ secrets.RENDER_DEPLOY_HOOK_URL }}"
+
+      - name: Wait for deployment
+        run: |
+          echo "Deployment triggered on Render"
+          echo "Check status at: https://dashboard.render.com"
+
+      - name: Notify deployment status
+        run: |
+          echo "✅ Deploy triggered successfully!"
+          echo "The application will be available in a few minutes at your Render URL"

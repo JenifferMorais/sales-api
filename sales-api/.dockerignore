@@ -1,0 +1,55 @@
+# Maven
+target
+.mvn
+mvnw
+mvnw.cmd
+
+# IDE
+.vscode
+.idea
+.project
+.classpath
+.settings
+*.swp
+*.swo
+*.swn
+.DS_Store
+*.iml
+
+# Tests
+src/test
+
+# Documentation
+README.md
+*.md
+docs
+
+# Git
+.git
+.gitignore
+.gitattributes
+
+# CI/CD
+.github
+
+# Environment
+.env
+.env.*
+
+# Docker
+Dockerfile
+docker-compose*.yml
+.dockerignore
+
+# Logs
+*.log
+logs
+
+# OS
+Thumbs.db
+
+# Scripts Windows
+*.bat
+
+# Quarkus Dev
+.quarkus

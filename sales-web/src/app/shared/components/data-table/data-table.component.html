@@ -1,0 +1,54 @@
+<div class="table-wrapper">
+  <table>
+    <thead>
+      <tr>
+        <th *ngFor="let c of columns" [style.width]="c.width" [style.text-align]="resolveTextAlign(c)">
+          {{ c.label }}
+        </th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr *ngFor="let r of data">
+        <td *ngFor="let c of columns" [style.text-align]="resolveTextAlign(c)">
+          <ng-container [ngSwitch]="c.type || 'text'">
+            <span *ngSwitchCase="'text'" [matTooltip]="(r[c.key] === null || r[c.key] === undefined || r[c.key] === '' ? '-' : r[c.key])"
+              [matTooltipDisabled]="!(((r[c.key] === null || r[c.key] === undefined || r[c.key] === '' ? '-' : r[c.key]) + '').length > (c.truncate ?? defaultTruncate))"
+              matTooltipPosition="below" matTooltipClass="tt-dark">
+              {{ (r[c.key] === null || r[c.key] === undefined || r[c.key] === '' ? '-' : r[c.key]) | truncate:(c.truncate ?? defaultTruncate) }}
+            </span>
+
+            <span *ngSwitchCase="'status'" class="pill" [ngClass]="statusClassFor(r, c)">
+              {{ r[c.key] }}
+            </span>
+
+
+            <div *ngSwitchCase="'actions'" class="actions">
+              <button class="icon" *ngFor="let a of actionsFor(r)" [ngClass]="a.class" type="button"
+                (click)="handleActionClick(a, r)" [matTooltip]="a.label || a.id" matTooltipPosition="below"
+                matTooltipClass="tt-dark">
+                <i [class]="a.icon"></i>
+              </button>
+            </div>
+          </ng-container>
+        </td>
+      </tr>
+
+      <tr *ngIf="!data?.length">
+        <td [attr.colspan]="columns.length" class="empty">Nenhum registro</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="pager" *ngIf="total > 0">
+    <div class="info">
+      {{ (page-1)*pageSize + (data.length?1:0) }}–{{ (page-1)*pageSize + data.length }} de {{ total }}
+    </div>
+    <div class="controls">
+      <button class="pbtn" (click)="onPrev()" [disabled]="page <= 1"><i class="fas fa-angle-left"></i></button>
+      <button class="pbtn" *ngFor="let p of pagesToShow()" [class.active]="p===page" (click)="goTo(p)">{{ p }}</button>
+      <button class="pbtn" (click)="onNext()" [disabled]="page >= totalPages"><i
+          class="fas fa-angle-right"></i></button>
+    </div>
+  </div>
+</div>

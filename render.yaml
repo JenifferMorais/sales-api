@@ -1,0 +1,31 @@
+services:
+  # Backend Service
+  - type: web
+    name: sales-api
+    runtime: docker
+    dockerfilePath: ./sales-api/docker/dockerfiles/Dockerfile.simple
+    dockerContext: ./sales-api
+    envVars:
+      - key: QUARKUS_HTTP_PORT
+        value: 8080
+      - key: QUARKUS_DATASOURCE_JDBC_URL
+        sync: false
+      - key: QUARKUS_DATASOURCE_USERNAME
+        sync: false
+      - key: QUARKUS_DATASOURCE_PASSWORD
+        sync: false
+    healthCheckPath: /q/health/live
+    autoDeploy: true
+    branch: main
+
+  # Frontend Service
+  - type: web
+    name: sales-web
+    runtime: docker
+    dockerfilePath: ./sales-web/docker/prod/Dockerfile
+    dockerContext: ./sales-web
+    envVars:
+      - key: API_URL
+        sync: false
+    autoDeploy: true
+    branch: main

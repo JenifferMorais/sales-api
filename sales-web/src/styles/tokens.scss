@@ -1,0 +1,146 @@
+// Sales Web - Design Tokens
+// Tema: Azul e Branco
+
+:root {
+  // Primary Colors (Azul)
+  --primary-50: #eff6ff;
+  --primary-100: #dbeafe;
+  --primary-200: #bfdbfe;
+  --primary-300: #93c5fd;
+  --primary-400: #60a5fa;
+  --primary-500: #3b82f6;
+  --primary-600: #2563eb;
+  --primary-700: #1d4ed8;
+  --primary-800: #1e40af;
+  --primary-900: #1e3a8a;
+
+  // Semantic Colors
+  --info-500: #3b82f6;
+  --success-500: #10b981;
+  --warning-500: #f59e0b;
+  --danger-500: #ef4444;
+
+  // Grayscale
+  --gray-50: #f9fafb;
+  --gray-100: #f3f4f6;
+  --gray-200: #e5e7eb;
+  --gray-300: #d1d5db;
+  --gray-400: #9ca3af;
+  --gray-500: #6b7280;
+  --gray-600: #4b5563;
+  --gray-700: #374151;
+  --gray-800: #1f2937;
+  --gray-900: #111827;
+
+  // Accent color
+  --accent-color: #3b82f6;
+  --brand: #1e40af;
+
+  // Text
+  --text: #111827;
+  --text-muted: #6b7280;
+
+  // Backgrounds
+  --bg: #ffffff;
+  --surface: #ffffff;
+  --surface-2: #f9fafb;
+  --panel: #ffffff;
+  --panel-2: #f3f4f6;
+
+  // Borders
+  --border: #e5e7eb;
+
+  // Input
+  --input-bg: #f9fafb;
+  --input-text: #111827;
+  --input-muted: #6b7280;
+  --input-border: #e5e7eb;
+  --input-placeholder: #9ca3af;
+
+  // Sidebar
+  --sidebar-bg: #e8e8e8a1;
+  --sidebar-text: #374151;
+  --sidebar-hover-bg: #d4d4d4;
+  --sidebar-active-bg: #3b82f6;
+
+  // Header
+  --header-bg: #1e40af;
+  --header-text: #ffffff;
+  --header-h: 56px;
+
+  // Modal
+  --modal-backdrop: rgba(0, 0, 0, 0.5);
+  --modal-bg: #ffffff;
+  --modal-text: #111827;
+  --modal-muted: #6b7280;
+  --modal-border: #e5e7eb;
+  --modal-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  --modal-input-bg: #f9fafb;
+  --modal-input-text: #111827;
+  --modal-input-border: #e5e7eb;
+  --modal-input-placeholder: #9ca3af;
+  --modal-brand: #3b82f6;
+  --modal-danger: #ef4444;
+
+  // Misc
+  --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --radius: 8px;
+  --h: 44px;
+}
+
+html[data-theme="dark"] {
+  // Text
+  --text: #e5e7eb;
+  --text-muted: #9ca3af;
+
+  // Backgrounds
+  --bg: #111827;
+  --surface: #1f2937;
+  --surface-2: #374151;
+  --panel: #1f2937;
+  --panel-2: #374151;
+
+  // Borders
+  --border: #374151;
+
+  // Input
+  --input-bg: #374151;
+  --input-text: #e5e7eb;
+  --input-muted: #9ca3af;
+  --input-border: #4b5563;
+  --input-placeholder: #6b7280;
+
+  // Sidebar
+  --sidebar-bg: #1a1a1a;
+  --sidebar-text: #d1d5db;
+  --sidebar-hover-bg: #2a2a2a;
+  --sidebar-active-bg: #2563eb;
+
+  // Header
+  --header-bg: #1f2937;
+  --header-text: #e5e7eb;
+
+  // Modal
+  --modal-backdrop: rgba(0, 0, 0, 0.75);
+  --modal-bg: #1f2937;
+  --modal-text: #e5e7eb;
+  --modal-muted: #9ca3af;
+  --modal-border: #374151;
+  --modal-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5), 0 10px 10px -5px rgba(0, 0, 0, 0.3);
+  --modal-input-bg: #374151;
+  --modal-input-text: #e5e7eb;
+  --modal-input-border: #4b5563;
+  --modal-input-placeholder: #6b7280;
+  --modal-brand: #3b82f6;
+  --modal-danger: #ef4444;
+
+  // Accent colors adjusted for dark mode
+  --accent-color: #3b82f6;
+  --brand: #2563eb;
+
+  // Semantic colors for dark mode
+  --info-500: #3b82f6;
+  --success-500: #10b981;
+  --warning-500: #f59e0b;
+  --danger-500: #ef4444;
+}

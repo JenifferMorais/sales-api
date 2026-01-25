@@ -1,0 +1,27 @@
+.toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.toolbar__right {
+  display: flex;
+  gap: 12px;
+}
+
+@media (max-width: 720px) {
+  .toolbar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .toolbar__right {
+    width: 100%;
+  }
+
+  .toolbar__right button {
+    width: 100%;
+  }
+}

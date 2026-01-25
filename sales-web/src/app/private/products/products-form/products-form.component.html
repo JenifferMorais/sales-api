@@ -1,0 +1,99 @@
+<section class="page">
+  <div class="admin-head">
+    <div>
+      <small class="crumb">PRODUTOS</small>
+      <h1 class="title">{{ isEdit ? 'Editar produto' : 'Cadastrar produto' }}</h1>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3 class="card__title">Dados do produto</h3>
+
+    <form [formGroup]="form" class="grid-2">
+      <div class="field" [class.error]="form.get('name')?.invalid && form.get('name')?.touched">
+        <label>Nome*</label>
+        <div class="control control--input">
+          <input formControlName="name" placeholder="Nome do produto" inputmode="text" />
+        </div>
+      </div>
+
+      <div class="field" [class.error]="form.get('type')?.invalid && form.get('type')?.touched">
+        <label>Categoria*</label>
+        <div class="control control--select">
+          <select formControlName="type">
+            <option value="">Selecione uma categoria</option>
+            <option value="LIPS">Lábios</option>
+            <option value="FACE">Rosto</option>
+            <option value="EYES">Olhos</option>
+            <option value="NAILS">Unhas</option>
+            <option value="SKIN_CARE">Cuidados com a Pele</option>
+            <option value="HAIR">Cabelos</option>
+            <option value="FRAGRANCE">Fragrância</option>
+            <option value="OTHER">Outros</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="field" [class.error]="form.get('purchasePrice')?.invalid && form.get('purchasePrice')?.touched">
+        <label>Preço de compra*</label>
+        <div class="control control--input">
+          <input type="number" formControlName="purchasePrice" placeholder="0.00" step="0.01" inputmode="decimal" />
+        </div>
+      </div>
+
+      <div class="field" [class.error]="form.get('salePrice')?.invalid && form.get('salePrice')?.touched">
+        <label>Preço de venda*</label>
+        <div class="control control--input">
+          <input type="number" formControlName="salePrice" placeholder="0.00" step="0.01" inputmode="decimal" />
+        </div>
+      </div>
+
+      <div class="field" [class.error]="form.get('weight')?.invalid && form.get('weight')?.touched">
+        <label>Peso (kg)*</label>
+        <div class="control control--input">
+          <input type="number" formControlName="weight" placeholder="0.00" step="0.01" inputmode="decimal" />
+        </div>
+      </div>
+
+      <div class="field" [class.error]="form.get('height')?.invalid && form.get('height')?.touched">
+        <label>Altura (cm)*</label>
+        <div class="control control--input">
+          <input type="number" formControlName="height" placeholder="0.00" step="0.01" inputmode="decimal" />
+        </div>
+      </div>
+
+      <div class="field" [class.error]="form.get('width')?.invalid && form.get('width')?.touched">
+        <label>Largura (cm)*</label>
+        <div class="control control--input">
+          <input type="number" formControlName="width" placeholder="0.00" step="0.01" inputmode="decimal" />
+        </div>
+      </div>
+
+      <div class="field" [class.error]="form.get('depth')?.invalid && form.get('depth')?.touched">
+        <label>Profundidade (cm)*</label>
+        <div class="control control--input">
+          <input type="number" formControlName="depth" placeholder="0.00" step="0.01" inputmode="decimal" />
+        </div>
+      </div>
+
+      <div class="field full">
+        <label>Detalhes</label>
+        <div class="control control--input">
+          <textarea formControlName="details" placeholder="Descrição detalhada do produto" rows="3"></textarea>
+        </div>
+      </div>
+
+      <div class="field full">
+        <label>Veículo de destino</label>
+        <div class="control control--input">
+          <input formControlName="destinationVehicle" placeholder="Opcional" inputmode="text" />
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <div class="actions">
+    <app-button styleClass="btn-outline" (clicked)="onCancel()">Cancelar</app-button>
+    <app-button styleClass="btn-green-form" (clicked)="onSubmit()">Salvar</app-button>
+  </div>
+</section>

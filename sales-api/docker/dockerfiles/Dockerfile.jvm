@@ -1,0 +1,48 @@
+####
+# Este Dockerfile é usado para criar uma imagem JVM otimizada da aplicação Quarkus.
+# Usa multi-stage build para reduzir o tamanho final da imagem.
+#
+# Build da imagem:
+#   docker build -f src/main/docker/Dockerfile.jvm -t sales-api:latest .
+#
+# Executar a imagem:
+#   docker run -i --rm -p 8080:8080 sales-api:latest
+#
+###
+
+# Stage 1: Build
+FROM registry.access.redhat.com/ubi8/openjdk-21:1.18 AS builder
+
+# Copiar arquivos do Maven
+COPY --chown=185 pom.xml /app/
+COPY --chown=185 mvnw /app/
+COPY --chown=185 .mvn /app/.mvn
+
+# Copiar código-fonte
+COPY --chown=185 src /app/src
+
+WORKDIR /app
+
+# Build da aplicação
+RUN ./mvnw package -DskipTests
+
+# Stage 2: Runtime
+FROM registry.access.redhat.com/ubi8/openjdk-21-runtime:1.18
+
+ENV LANGUAGE='pt_BR:pt'
+ENV LANG='pt_BR.UTF-8'
+
+# Configurações de JVM otimizadas
+ENV JAVA_OPTS="-Dquarkus.http.host=0.0.0.0 -Djava.util.logging.manager=org.jboss.logmanager.LogManager"
+ENV JAVA_APP_JAR="/deployments/quarkus-run.jar"
+
+# Copiar artifacts do build
+COPY --from=builder --chown=185 /app/target/quarkus-app/lib/ /deployments/lib/
+COPY --from=builder --chown=185 /app/target/quarkus-app/*.jar /deployments/
+COPY --from=builder --chown=185 /app/target/quarkus-app/app/ /deployments/app/
+COPY --from=builder --chown=185 /app/target/quarkus-app/quarkus/ /deployments/quarkus/
+
+EXPOSE 8080
+USER 185
+
+ENTRYPOINT [ "java", "-jar", "/deployments/quarkus-run.jar" ]
