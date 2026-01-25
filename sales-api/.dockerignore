@@ -53,3 +53,7 @@ Thumbs.db
 
 # Quarkus Dev
 .quarkus
+
+# Exceções necessárias para o build
+!src/main/resources/META-INF/resources/privateKey.pem
+!src/main/resources/META-INF/resources/publicKey.pem
