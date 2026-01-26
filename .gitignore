@@ -304,3 +304,4 @@ remove-comments-tests.py
 *.zip
 /.claude
 .claude/settings.local.json
+/docs
