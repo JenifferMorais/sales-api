@@ -72,9 +72,9 @@ sales-api/quarkus.log
 *.db
 *.sqlite
 
-# JWT Keys (se não forem de exemplo)
-sales-api/src/main/resources/jwt/privateKey.pem
-sales-api/src/main/resources/jwt/publicKey.pem
+# JWT Keys em outras localizações (não a de META-INF que é usada)
+# sales-api/src/main/resources/jwt/privateKey.pem
+# sales-api/src/main/resources/jwt/publicKey.pem
 
 # Environment variables
 sales-api/.env
@@ -207,8 +207,8 @@ tramp
 # SECURITY & CREDENTIALS
 # ============================================
 
-# Sensitive files
-*.pem
+# Sensitive files (mas não bloquear JWT keys em META-INF/resources)
+# *.pem - comentado para permitir JWT keys de desenvolvimento
 *.key
 *.cert
 *.crt

@@ -57,6 +57,8 @@ credentials/
 *.p12
 *.jks
 
-# JWT Keys (NÃO commitar chaves privadas!)
-src/main/resources/META-INF/resources/privateKey.pem
-src/main/resources/META-INF/resources/publicKey.pem
+# JWT Keys - NOTA: Estas são chaves de exemplo/desenvolvimento
+# Em produção, gere novas chaves e use variáveis de ambiente
+# Por ora, commitamos as chaves de dev para o Render funcionar
+# !src/main/resources/META-INF/resources/privateKey.pem
+# !src/main/resources/META-INF/resources/publicKey.pem
