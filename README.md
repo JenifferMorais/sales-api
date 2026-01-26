@@ -144,12 +144,6 @@ npm test
 
 ## Segurança
 
-**IMPORTANTE:** Leia o guia de segurança antes de fazer deploy em produção.
-
-Ver documentação em:
-- [Guia de Segurança](SECURITY.md) - Configuração de segurança e melhores práticas
-- [Changelog de Segurança](SECURITY_CHANGELOG.md) - Mudanças implementadas
-
 **Resumo:**
 - ✅ Credenciais removidas do código fonte
 - ✅ Seeds ativos apenas para desenvolvimento local
@@ -204,13 +198,6 @@ export const environment = {
 };
 ```
 
-### Segurança
-
-- **NUNCA** commite senhas no repositório
-- Use variáveis de ambiente para todas as credenciais
-- O arquivo `.env` está no `.gitignore` e não será commitado
-- Senhas padrão foram removidas do código por segurança
-- Para produção, use secrets management (AWS Secrets Manager, Azure Key Vault, etc.)
 
 ## Licença
 
