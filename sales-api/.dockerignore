@@ -1,6 +1,5 @@
-# Build output
+# Build output (mas incluir quarkus-app se precisar)
 target/
-!target/quarkus-app
 
 # Maven wrapper
 .mvn/
@@ -10,6 +9,7 @@ mvnw.cmd
 # IDE
 .vscode/
 .idea/
+*.iml
 .project
 .classpath
 .settings/
@@ -17,10 +17,11 @@ mvnw.cmd
 *.swo
 *.swn
 .DS_Store
-*.iml
+
+# Tests (bloquear apenas os testes)
+src/test/
 
 # Documentation
-README.md
 *.md
 docs/
 
@@ -32,11 +33,11 @@ docs/
 # CI/CD
 .github/
 
-# Environment files
+# Environment
 .env
 .env.*
 
-# Docker files (não copiar dentro do container)
+# Docker (não copiar configs docker para dentro do container)
 docker/
 Dockerfile*
 docker-compose*.yml
@@ -46,11 +47,8 @@ docker-compose*.yml
 *.log
 logs/
 
-# OS
+# OS files
 Thumbs.db
 
 # Quarkus dev
 .quarkus/
-
-# Tests (mas manter src/main)
-src/test/

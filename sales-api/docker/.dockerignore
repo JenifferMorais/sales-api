@@ -82,11 +82,8 @@ docker-compose*.yml
 Dockerfile*
 .dockerignore
 
-# Secrets
+# Secrets (mas JWT keys em META-INF são necessários)
 secrets/
-# Note: JWT keys are needed by the application, so we keep them
-!src/main/resources/META-INF/resources/privateKey.pem
-!src/main/resources/META-INF/resources/publicKey.pem
 
 # Temporary files
 *.tmp
