@@ -34,6 +34,12 @@ if [ -z "${QUARKUS_DATASOURCE_JDBC_URL:-}" ]; then
     hostport="${hostdb%%/*}"
     dbpath="${hostdb#*/}"
     db="${dbpath%%\?*}"
+    query=""
+    case "$dbpath" in
+      *\?*)
+        query="${dbpath#*\?}"
+        ;;
+    esac
 
     host="${hostport%%:*}"
     port="${hostport#*:}"
@@ -41,7 +47,11 @@ if [ -z "${QUARKUS_DATASOURCE_JDBC_URL:-}" ]; then
       port="5432"
     fi
 
-    export QUARKUS_DATASOURCE_JDBC_URL="jdbc:postgresql://${host}:${port}/${db}"
+    jdbc_url="jdbc:postgresql://${host}:${port}/${db}"
+    if [ -n "$query" ]; then
+      jdbc_url="${jdbc_url}?${query}"
+    fi
+    export QUARKUS_DATASOURCE_JDBC_URL="$jdbc_url"
 
     if [ -z "${QUARKUS_DATASOURCE_USERNAME:-}" ] && [ -n "$user" ]; then
       export QUARKUS_DATASOURCE_USERNAME="$user"
