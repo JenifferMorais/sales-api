@@ -62,7 +62,9 @@ class SaleMapperTest {
         SaleRequest request = new SaleRequest();
         request.setCode("SALE001");
         request.setCustomerCode("CUST001");
-        request.setPaymentMethod("CREDIT_CARD");
+        request.setSellerCode("SELLER001");
+        request.setSellerName("Vendedor Sistema");
+        request.setPaymentMethod("CARTAO_CREDITO");
         request.setCardNumber("1234567812345678");
 
         SaleItemRequest itemRequest = new SaleItemRequest();
@@ -89,6 +91,8 @@ class SaleMapperTest {
         SaleRequest request = new SaleRequest();
         request.setCode("SALE001");
         request.setCustomerCode("INVALID");
+        request.setSellerCode("SELLER001");
+        request.setSellerName("Vendedor Sistema");
         request.setPaymentMethod("PIX");
         request.setItems(List.of());
 
@@ -104,6 +108,8 @@ class SaleMapperTest {
         SaleRequest request = new SaleRequest();
         request.setCode("SALE001");
         request.setCustomerCode("CUST001");
+        request.setSellerCode("SELLER001");
+        request.setSellerName("Vendedor Sistema");
         request.setPaymentMethod("PIX");
 
         SaleItemRequest itemRequest = new SaleItemRequest();

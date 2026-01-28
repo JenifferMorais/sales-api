@@ -1,31 +1,74 @@
+databases:
+  - name: sales-db
+    databaseName: sales_db
+    user: sales
+    plan: free
+    region: oregon
+
 services:
-  # Backend Service
   - type: web
     name: sales-api
     runtime: docker
     dockerfilePath: ./sales-api/docker/dockerfiles/Dockerfile.simple
     dockerContext: ./sales-api
+    plan: free
+    region: oregon
     envVars:
+      - key: DB_HOST
+        fromDatabase:
+          name: sales-db
+          property: host
+      - key: DB_PORT
+        fromDatabase:
+          name: sales-db
+          property: port
+      - key: DB_NAME
+        fromDatabase:
+          name: sales-db
+          property: database
+      - key: DB_USERNAME
+        fromDatabase:
+          name: sales-db
+          property: user
+      - key: DB_PASSWORD
+        fromDatabase:
+          name: sales-db
+          property: password
+      - key: DB_MAX_POOL_SIZE
+        value: 16
       - key: QUARKUS_HTTP_PORT
         value: 8080
-      - key: QUARKUS_DATASOURCE_JDBC_URL
-        sync: false
-      - key: QUARKUS_DATASOURCE_USERNAME
-        sync: false
-      - key: QUARKUS_DATASOURCE_PASSWORD
-        sync: false
+      - key: QUARKUS_PROFILE
+        value: prod
+      - key: JWT_ISSUER
+        value: sales-api
+      - key: JWT_EXPIRATION_HOURS
+        value: 24
+      - key: JWT_INACTIVITY_TIMEOUT_MINUTES
+        value: 15
+      - key: SMTP_MOCK
+        value: true
+      - key: SMTP_FROM
+        value: noreply@sales.com
+      - key: SMTP_HOST
+        value: smtp.gmail.com
+      - key: SMTP_PORT
+        value: 587
+      - key: APP_URL
+        value: https://sales-api.onrender.com
     healthCheckPath: /q/health/live
     autoDeploy: true
     branch: main
 
-  # Frontend Service
   - type: web
     name: sales-web
     runtime: docker
     dockerfilePath: ./sales-web/docker/prod/Dockerfile
     dockerContext: ./sales-web
+    plan: free
+    region: oregon
     envVars:
       - key: API_URL
-        sync: false
+        value: https://sales-api.onrender.com/api
     autoDeploy: true
     branch: main

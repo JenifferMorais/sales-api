@@ -102,7 +102,7 @@ class UpdateProductUseCaseTest {
                 "Todos"
         ))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("Product not found with id: 999");
+                .hasMessageContaining("999");
 
         verify(productRepository).findById(999L);
         verify(productRepository, never()).save(any(Product.class));

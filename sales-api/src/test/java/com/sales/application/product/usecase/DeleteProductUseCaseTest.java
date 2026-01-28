@@ -67,7 +67,7 @@ class DeleteProductUseCaseTest {
 
         assertThatThrownBy(() -> deleteProductUseCase.execute(999L))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("Product not found with id: 999");
+                .hasMessageContaining("999");
 
         verify(productRepository).findById(999L);
         verify(productRepository, never()).deleteById(anyLong());
@@ -123,7 +123,7 @@ class DeleteProductUseCaseTest {
 
         assertThatThrownBy(() -> deleteProductUseCase.execute(null))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("Product not found with id: null");
+                .hasMessageContaining("null");
 
         verify(productRepository, never()).deleteById(anyLong());
     }

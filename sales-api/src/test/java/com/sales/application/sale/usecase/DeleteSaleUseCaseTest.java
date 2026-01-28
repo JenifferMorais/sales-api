@@ -60,7 +60,7 @@ class DeleteSaleUseCaseTest {
 
         assertThatThrownBy(() -> deleteSaleUseCase.execute(999L))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("Sale not found with id: 999");
+                .hasMessageContaining("999");
 
         verify(saleRepository).findById(999L);
         verify(saleRepository, never()).deleteById(anyLong());

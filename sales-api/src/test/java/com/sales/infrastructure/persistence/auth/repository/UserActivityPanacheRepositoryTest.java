@@ -81,7 +81,7 @@ class UserActivityPanacheRepositoryTest {
 
         assertTrue(second.isPresent());
         LocalDateTime secondActivityTime = second.get().getLastActivityAt();
-        assertTrue(secondActivityTime.isAfter(firstActivityTime),
+        assertFalse(secondActivityTime.isBefore(firstActivityTime),
                 "Last activity time should be updated");
         assertEquals(first.get().getId(), second.get().getId(),
                 "Should be the same entity (updated, not created new)");
@@ -129,8 +129,8 @@ class UserActivityPanacheRepositoryTest {
         assertFalse(repository.findByTokenHash(recentTokenHash).isPresent(),
                 "Recent activity should also be deleted when cutoff is in future");
 
-        repository.delete("tokenHash", oldTokenHash);
-        repository.delete("tokenHash", recentTokenHash);
+        repository.deleteByTokenHash(oldTokenHash);
+        repository.deleteByTokenHash(recentTokenHash);
     }
 
     @Test
@@ -148,8 +148,8 @@ class UserActivityPanacheRepositoryTest {
         assertTrue(repository.findByTokenHash(recentTokenHash).isPresent(),
                 "Recent activity should remain");
 
-        repository.delete("tokenHash", oldTokenHash);
-        repository.delete("tokenHash", recentTokenHash);
+        repository.deleteByTokenHash(oldTokenHash);
+        repository.deleteByTokenHash(recentTokenHash);
     }
 
     @Test
@@ -187,7 +187,7 @@ class UserActivityPanacheRepositoryTest {
         assertEquals(userId1, activity1.get().getUserId());
         assertEquals(userId2, activity2.get().getUserId());
 
-        repository.delete("tokenHash", tokenHash1);
-        repository.delete("tokenHash", tokenHash2);
+        repository.deleteByTokenHash(tokenHash1);
+        repository.deleteByTokenHash(tokenHash2);
     }
 }

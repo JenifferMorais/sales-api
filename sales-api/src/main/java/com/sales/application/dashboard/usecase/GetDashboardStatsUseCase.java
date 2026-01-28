@@ -69,8 +69,9 @@ public class GetDashboardStatsUseCase {
                 .count();
         BigDecimal customersVariation = calculateVariation(currentMonthCustomers, lastMonthCustomers);
 
-        Long totalSales = (long) saleRepository.findAll().size();
-        BigDecimal totalRevenue = saleRepository.findAll().stream()
+        List<Sale> allSales = saleRepository.findAll();
+        Long totalSales = (long) allSales.size();
+        BigDecimal totalRevenue = allSales.stream()
                 .map(Sale::getTotalAmount)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
         Long totalCustomers = (long) allCustomers.size();

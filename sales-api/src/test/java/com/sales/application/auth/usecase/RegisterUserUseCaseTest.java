@@ -48,7 +48,7 @@ class RegisterUserUseCaseTest {
 
     @BeforeEach
     void setUp() {
-        Document document = Document.create("12345678901", "MG1234567");
+        Document document = Document.create("12345678909", "MG1234567");
         Address address = Address.create(
                 "30130100",
                 "Av. Afonso Pena",

@@ -169,7 +169,7 @@ class GetNewCustomersUseCaseTest {
         entity.setFullName(fullName);
         entity.setBirthDate(birthDate);
         entity.setMotherName("Mãe de " + fullName);
-        entity.setCpf("12345678901");
+        entity.setCpf("12345678909");
         entity.setRg("MG1234567");
         entity.setZipCode("30130100");
         entity.setStreet("Rua Teste");

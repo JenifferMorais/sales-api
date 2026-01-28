@@ -12,8 +12,10 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
@@ -29,28 +31,28 @@ class ResetPasswordUseCaseTest {
     private ResetPasswordUseCase resetPasswordUseCase;
 
     private User validUser;
-    private String validResetToken = "valid-reset-token-123";
-    private String newPassword = "NewPassword@123";
+    private final String validResetToken = "valid-reset-token-123";
+    private final String newPassword = "NewPassword@123";
 
     @BeforeEach
     void setUp() {
         Email email = new Email("john.silva@email.com");
         Password password = Password.fromPlainText("OldPassword@123");
         validUser = new User("CUST001", email, password);
-
-        validUser.setResetPasswordToken(validResetToken);
+        validUser.generateResetPasswordToken(validResetToken, LocalDateTime.now().plusHours(1));
     }
 
     @Test
     @DisplayName("Should reset password successfully with valid token")
     void shouldResetPasswordSuccessfully() {
-
         when(userRepository.findByResetPasswordToken(validResetToken)).thenReturn(Optional.of(validUser));
         when(userRepository.save(any(User.class))).thenReturn(validUser);
 
-        when(validUser.isResetTokenValid(validResetToken)).thenReturn(true);
-
         resetPasswordUseCase.execute(validResetToken, newPassword);
+
+        assertThat(validUser.authenticate(newPassword)).isTrue();
+        assertThat(validUser.getResetPasswordToken()).isNull();
+        assertThat(validUser.getResetPasswordTokenExpiresAt()).isNull();
 
         verify(userRepository).findByResetPasswordToken(validResetToken);
         verify(userRepository).save(validUser);
@@ -59,7 +61,6 @@ class ResetPasswordUseCaseTest {
     @Test
     @DisplayName("Should throw exception when token not found")
     void shouldThrowExceptionWhenTokenNotFound() {
-
         when(userRepository.findByResetPasswordToken("invalid-token")).thenReturn(Optional.empty());
 
         assertThatThrownBy(() -> resetPasswordUseCase.execute("invalid-token", newPassword))
@@ -73,10 +74,8 @@ class ResetPasswordUseCaseTest {
     @Test
     @DisplayName("Should throw exception when token is invalid or expired")
     void shouldThrowExceptionWhenTokenInvalidOrExpired() {
-
+        validUser.generateResetPasswordToken(validResetToken, LocalDateTime.now().minusMinutes(1));
         when(userRepository.findByResetPasswordToken(validResetToken)).thenReturn(Optional.of(validUser));
-
-        when(validUser.isResetTokenValid(validResetToken)).thenReturn(false);
 
         assertThatThrownBy(() -> resetPasswordUseCase.execute(validResetToken, newPassword))
                 .isInstanceOf(IllegalArgumentException.class)
@@ -89,9 +88,7 @@ class ResetPasswordUseCaseTest {
     @Test
     @DisplayName("Should throw exception when new password is invalid")
     void shouldThrowExceptionWhenPasswordInvalid() {
-
         when(userRepository.findByResetPasswordToken(validResetToken)).thenReturn(Optional.of(validUser));
-        when(validUser.isResetTokenValid(validResetToken)).thenReturn(true);
 
         assertThatThrownBy(() -> resetPasswordUseCase.execute(validResetToken, "weak"))
                 .isInstanceOf(IllegalArgumentException.class);
@@ -103,9 +100,7 @@ class ResetPasswordUseCaseTest {
     @Test
     @DisplayName("Should verify operations happen in correct order")
     void shouldVerifyOperationsOrder() {
-
         when(userRepository.findByResetPasswordToken(validResetToken)).thenReturn(Optional.of(validUser));
-        when(validUser.isResetTokenValid(validResetToken)).thenReturn(true);
         when(userRepository.save(any(User.class))).thenReturn(validUser);
 
         resetPasswordUseCase.execute(validResetToken, newPassword);
@@ -118,9 +113,7 @@ class ResetPasswordUseCaseTest {
     @Test
     @DisplayName("Should save user after password change")
     void shouldSaveUserAfterPasswordChange() {
-
         when(userRepository.findByResetPasswordToken(validResetToken)).thenReturn(Optional.of(validUser));
-        when(validUser.isResetTokenValid(validResetToken)).thenReturn(true);
         when(userRepository.save(any(User.class))).thenReturn(validUser);
 
         resetPasswordUseCase.execute(validResetToken, newPassword);

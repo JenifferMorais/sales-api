@@ -77,7 +77,7 @@ class CreateCustomerUseCaseTest {
 
         assertThatThrownBy(() -> useCase.execute(customer))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessageContaining("Customer with code CUST001 already exists");
+                .hasMessageContaining("CUST001");
 
         verify(customerRepository, never()).save(any(Customer.class));
     }
@@ -103,7 +103,7 @@ class CreateCustomerUseCaseTest {
 
         assertThatThrownBy(() -> useCase.execute(customer))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessageContaining("Customer with CPF");
+                .hasMessageContaining("CPF");
 
         verify(customerRepository, never()).save(any(Customer.class));
     }

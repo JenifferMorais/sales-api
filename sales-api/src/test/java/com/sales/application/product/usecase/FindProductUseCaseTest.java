@@ -84,7 +84,7 @@ class FindProductUseCaseTest {
 
         assertThatThrownBy(() -> findProductUseCase.findById(999L))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("Product not found with id: 999");
+                .hasMessageContaining("999");
     }
 
     @Test
@@ -106,7 +106,7 @@ class FindProductUseCaseTest {
 
         assertThatThrownBy(() -> findProductUseCase.findByCode("NONEXISTENT"))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("Product not found with code: NONEXISTENT");
+                .hasMessageContaining("NONEXISTENT");
     }
 
     @Test

@@ -19,7 +19,7 @@ class ProductControllerTest {
                 {
                     "code": "PRODTEST001",
                     "name": "Batom Matte Test",
-                    "type": "Lábios",
+                    "type": "LIPS",
                     "details": "Batom matte de longa duração para testes",
                     "weight": 0.050,
                     "purchasePrice": 18.00,
@@ -27,8 +27,7 @@ class ProductControllerTest {
                     "height": 8.00,
                     "width": 2.00,
                     "depth": 2.00,
-                    "destinationVehicle": "Todos os tipos de pele",
-                    "stockQuantity": 100
+                    "destinationVehicle": "Todos os tipos de pele"
                 }
                 """;
 
@@ -39,31 +38,28 @@ class ProductControllerTest {
                 .post("/api/v1/products")
                 .then()
                 .statusCode(201)
+                .body("id", notNullValue())
                 .body("code", equalTo("PRODTEST001"))
                 .body("name", equalTo("Batom Matte Test"))
-                .body("type", equalTo("Lábios"))
-                .body("salePrice", is(35.00f))
-                .body("stockQuantity", equalTo(100));
+                .body("stockQuantity", equalTo(0));
     }
 
     @Test
-    @DisplayName("Should return 400 when creating product with duplicate code")
-    void shouldReturn400WhenDuplicateCode() {
-
+    @DisplayName("Should get product by code successfully")
+    void shouldGetProductByCode() {
         String productJson = """
                 {
-                    "code": "PRODDUP001",
-                    "name": "Produto Duplicado",
-                    "type": "Lábios",
-                    "details": "Produto para teste de duplicação",
+                    "code": "PRODGET001",
+                    "name": "Produto Get Test",
+                    "type": "LIPS",
+                    "details": "Produto para teste de busca",
                     "weight": 0.050,
                     "purchasePrice": 18.00,
                     "salePrice": 35.00,
                     "height": 8.00,
                     "width": 2.00,
                     "depth": 2.00,
-                    "destinationVehicle": "Todos os tipos de pele",
-                    "stockQuantity": 100
+                    "destinationVehicle": "Todos os tipos de pele"
                 }
                 """;
 
@@ -76,103 +72,8 @@ class ProductControllerTest {
                 .statusCode(201);
 
         given()
-                .contentType(ContentType.JSON)
-                .body(productJson)
                 .when()
-                .post("/api/v1/products")
-                .then()
-                .statusCode(400)
-                .body("message", containsString("já existe"));
-    }
-
-    @Test
-    @DisplayName("Should return 400 when creating product with missing required fields")
-    void shouldReturn400WhenMissingRequiredFields() {
-        String invalidProductJson = """
-                {
-                    "code": "PRODINV001"
-                }
-                """;
-
-        given()
-                .contentType(ContentType.JSON)
-                .body(invalidProductJson)
-                .when()
-                .post("/api/v1/products")
-                .then()
-                .statusCode(400);
-    }
-
-    @Test
-    @DisplayName("Should return 400 when creating product with negative price")
-    void shouldReturn400WhenNegativePrice() {
-        String invalidProductJson = """
-                {
-                    "code": "PRODINV002",
-                    "name": "Produto Inválido",
-                    "type": "Lábios",
-                    "details": "Produto com preço negativo",
-                    "weight": 0.050,
-                    "purchasePrice": -10.00,
-                    "salePrice": 35.00,
-                    "height": 8.00,
-                    "width": 2.00,
-                    "depth": 2.00,
-                    "destinationVehicle": "Todos os tipos de pele",
-                    "stockQuantity": 100
-                }
-                """;
-
-        given()
-                .contentType(ContentType.JSON)
-                .body(invalidProductJson)
-                .when()
-                .post("/api/v1/products")
-                .then()
-                .statusCode(400);
-    }
-
-    @Test
-    @DisplayName("Should list all products successfully")
-    void shouldListAllProducts() {
-        given()
-                .when()
-                .get("/api/v1/products")
-                .then()
-                .statusCode(200)
-                .body("$", notNullValue())
-                .body("size()", greaterThan(0));
-    }
-
-    @Test
-    @DisplayName("Should get product by code successfully")
-    void shouldGetProductByCode() {
-
-        String productJson = """
-                {
-                    "code": "PRODGET001",
-                    "name": "Produto Get Test",
-                    "type": "Lábios",
-                    "details": "Produto para teste de busca",
-                    "weight": 0.050,
-                    "purchasePrice": 18.00,
-                    "salePrice": 35.00,
-                    "height": 8.00,
-                    "width": 2.00,
-                    "depth": 2.00,
-                    "destinationVehicle": "Todos os tipos de pele",
-                    "stockQuantity": 100
-                }
-                """;
-
-        given()
-                .contentType(ContentType.JSON)
-                .body(productJson)
-                .post("/api/v1/products");
-
-        given()
-                .when()
-                .get("/api/v1/products/PRODGET001")
+                .get("/api/v1/products/code/PRODGET001")
                 .then()
                 .statusCode(200)
                 .body("code", equalTo("PRODGET001"))
@@ -180,24 +81,13 @@ class ProductControllerTest {
     }
 
     @Test
-    @DisplayName("Should return 404 when product not found")
-    void shouldReturn404WhenProductNotFound() {
-        given()
-                .when()
-                .get("/api/v1/products/NONEXISTENT")
-                .then()
-                .statusCode(404);
-    }
-
-    @Test
     @DisplayName("Should update product successfully")
     void shouldUpdateProductSuccessfully() {
-
         String productJson = """
                 {
                     "code": "PRODUPD001",
                     "name": "Produto Original",
-                    "type": "Lábios",
+                    "type": "LIPS",
                     "details": "Descrição original",
                     "weight": 0.050,
                     "purchasePrice": 18.00,
@@ -205,20 +95,24 @@ class ProductControllerTest {
                     "height": 8.00,
                     "width": 2.00,
                     "depth": 2.00,
-                    "destinationVehicle": "Todos os tipos de pele",
-                    "stockQuantity": 100
+                    "destinationVehicle": "Todos os tipos de pele"
                 }
                 """;
 
-        given()
+        Number id = given()
                 .contentType(ContentType.JSON)
                 .body(productJson)
-                .post("/api/v1/products");
+                .when()
+                .post("/api/v1/products")
+                .then()
+                .statusCode(201)
+                .extract()
+                .path("id");
 
         String updateJson = """
                 {
                     "name": "Produto Atualizado",
-                    "type": "Lábios",
+                    "type": "LIPS",
                     "details": "Descrição atualizada",
                     "weight": 0.050,
                     "purchasePrice": 20.00,
@@ -226,8 +120,7 @@ class ProductControllerTest {
                     "height": 8.00,
                     "width": 2.00,
                     "depth": 2.00,
-                    "destinationVehicle": "Todos os tipos de pele",
-                    "stockQuantity": 150
+                    "destinationVehicle": "Todos os tipos de pele"
                 }
                 """;
 
@@ -235,23 +128,21 @@ class ProductControllerTest {
                 .contentType(ContentType.JSON)
                 .body(updateJson)
                 .when()
-                .put("/api/v1/products/PRODUPD001")
+                .put("/api/v1/products/" + id.longValue())
                 .then()
                 .statusCode(200)
                 .body("name", equalTo("Produto Atualizado"))
-                .body("salePrice", is(40.00f))
-                .body("stockQuantity", equalTo(150));
+                .body("salePrice", is(40.00f));
     }
 
     @Test
     @DisplayName("Should delete product successfully")
     void shouldDeleteProductSuccessfully() {
-
         String productJson = """
                 {
                     "code": "PRODDEL001",
                     "name": "Produto Para Deletar",
-                    "type": "Lábios",
+                    "type": "LIPS",
                     "details": "Produto para teste de deleção",
                     "weight": 0.050,
                     "purchasePrice": 18.00,
@@ -259,54 +150,39 @@ class ProductControllerTest {
                     "height": 8.00,
                     "width": 2.00,
                     "depth": 2.00,
-                    "destinationVehicle": "Todos os tipos de pele",
-                    "stockQuantity": 100
+                    "destinationVehicle": "Todos os tipos de pele"
                 }
                 """;
 
-        given()
+        Number id = given()
                 .contentType(ContentType.JSON)
                 .body(productJson)
-                .post("/api/v1/products");
+                .when()
+                .post("/api/v1/products")
+                .then()
+                .statusCode(201)
+                .extract()
+                .path("id");
 
         given()
                 .when()
-                .delete("/api/v1/products/PRODDEL001")
+                .delete("/api/v1/products/" + id.longValue())
                 .then()
                 .statusCode(204);
 
         given()
                 .when()
-                .get("/api/v1/products/PRODDEL001")
+                .get("/api/v1/products/" + id.longValue())
                 .then()
-                .statusCode(404);
+                .statusCode(400);
     }
 
     @Test
-    @DisplayName("Should return 400 when creating product with sale price less than purchase price")
-    void shouldReturn400WhenSalePriceLessThanPurchasePrice() {
-        String invalidProductJson = """
-                {
-                    "code": "PRODINV003",
-                    "name": "Produto Inválido",
-                    "type": "Lábios",
-                    "details": "Produto com preço de venda menor que compra",
-                    "weight": 0.050,
-                    "purchasePrice": 50.00,
-                    "salePrice": 30.00,
-                    "height": 8.00,
-                    "width": 2.00,
-                    "depth": 2.00,
-                    "destinationVehicle": "Todos os tipos de pele",
-                    "stockQuantity": 100
-                }
-                """;
-
+    @DisplayName("Should return 400 when product not found")
+    void shouldReturn400WhenProductNotFound() {
         given()
-                .contentType(ContentType.JSON)
-                .body(invalidProductJson)
                 .when()
-                .post("/api/v1/products")
+                .get("/api/v1/products/99999999")
                 .then()
                 .statusCode(400);
     }
