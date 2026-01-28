@@ -35,40 +35,30 @@ public class UserActivityService {
     Long inactivityTimeoutMinutes;
 
     public boolean checkAndInvalidateIfInactive(String token) {
-        try {
-            String tokenHash = hashToken(token);
-            Optional<UserActivityEntity> activity = activityRepository.findByTokenHash(tokenHash);
+        String tokenHash = hashToken(token);
+        Optional<UserActivityEntity> activity = activityRepository.findByTokenHash(tokenHash);
 
-            if (activity.isEmpty()) {
-
-                JsonWebToken jwt = jwtParser.parse(token);
-                Long userId = Long.parseLong(jwt.getSubject());
-                activityRepository.updateActivity(tokenHash, userId);
-                return false;
-            }
-
-            UserActivityEntity activityEntity = activity.get();
-            LocalDateTime lastActivity = activityEntity.getLastActivityAt();
-            LocalDateTime now = LocalDateTime.now();
-            Duration inactivityDuration = Duration.between(lastActivity, now);
-
-            if (inactivityDuration.toMinutes() >= inactivityTimeoutMinutes) {
-                LOG.infof("Token inativo há %d minutos. Invalidando token do usuário %d",
-                        inactivityDuration.toMinutes(), activityEntity.getUserId());
-
-                tokenBlacklistService.blacklistToken(token);
-
-                activityRepository.deleteByTokenHash(tokenHash);
-
-                return true;
-            }
-
-            return false;
-
-        } catch (ParseException e) {
-            LOG.error("Erro ao parsear token JWT", e);
+        // If there is no activity record yet, we can't consider it inactive.
+        // The request filter calls updateActivity(token) afterwards to create/update the record.
+        if (activity.isEmpty()) {
             return false;
         }
+
+        UserActivityEntity activityEntity = activity.get();
+        LocalDateTime lastActivity = activityEntity.getLastActivityAt();
+        LocalDateTime now = LocalDateTime.now();
+        Duration inactivityDuration = Duration.between(lastActivity, now);
+
+        if (inactivityDuration.toMinutes() >= inactivityTimeoutMinutes) {
+            LOG.infof("Token inativo há %d minutos. Invalidando token do usuário %d",
+                    inactivityDuration.toMinutes(), activityEntity.getUserId());
+
+            tokenBlacklistService.blacklistToken(token);
+            activityRepository.deleteByTokenHash(tokenHash);
+            return true;
+        }
+
+        return false;
     }
 
     public void updateActivity(String token) {
@@ -76,10 +66,8 @@ public class UserActivityService {
             JsonWebToken jwt = jwtParser.parse(token);
             Long userId = Long.parseLong(jwt.getSubject());
             String tokenHash = hashToken(token);
-
             activityRepository.updateActivity(tokenHash, userId);
-
-        } catch (ParseException e) {
+        } catch (ParseException | RuntimeException e) {
             LOG.error("Erro ao atualizar atividade do usuário", e);
         }
     }
@@ -90,7 +78,6 @@ public class UserActivityService {
     }
 
     public void cleanupOldActivities() {
-
         LocalDateTime cutoffDate = LocalDateTime.now().minusHours(24);
         activityRepository.cleanupOldActivities(cutoffDate);
         LOG.info("Limpeza de atividades antigas concluída");

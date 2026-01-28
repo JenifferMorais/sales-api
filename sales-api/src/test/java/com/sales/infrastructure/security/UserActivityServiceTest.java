@@ -63,15 +63,14 @@ class UserActivityServiceTest {
     }
 
     @Test
-    void testCheckAndInvalidateIfInactive_NoActivityExists_CreatesActivity() throws ParseException {
+    void testCheckAndInvalidateIfInactive_NoActivityExists_ReturnsFalse() throws ParseException {
         when(activityRepository.findByTokenHash(anyString())).thenReturn(Optional.empty());
-        when(jwtParser.parse(TEST_TOKEN)).thenReturn(jsonWebToken);
-        when(jsonWebToken.getSubject()).thenReturn(USER_ID.toString());
 
         boolean result = userActivityService.checkAndInvalidateIfInactive(TEST_TOKEN);
 
         assertFalse(result);
-        verify(activityRepository).updateActivity(anyString(), eq(USER_ID));
+        verify(activityRepository, never()).updateActivity(anyString(), anyLong());
+        verify(jwtParser, never()).parse(anyString());
         verify(tokenBlacklistService, never()).blacklistToken(anyString());
     }
 
@@ -120,13 +119,10 @@ class UserActivityServiceTest {
     }
 
     @Test
-    void testCheckAndInvalidateIfInactive_ParseException_ReturnsFalse() throws ParseException {
+    void testCheckAndInvalidateIfInactive_NoActivityExists_DoesNotThrow() throws ParseException {
         when(activityRepository.findByTokenHash(anyString())).thenReturn(Optional.empty());
-        when(jwtParser.parse(TEST_TOKEN)).thenThrow(new ParseException("Invalid token"));
 
-        boolean result = userActivityService.checkAndInvalidateIfInactive(TEST_TOKEN);
-
-        assertFalse(result);
+        assertDoesNotThrow(() -> userActivityService.checkAndInvalidateIfInactive(TEST_TOKEN));
         verify(tokenBlacklistService, never()).blacklistToken(anyString());
     }
 

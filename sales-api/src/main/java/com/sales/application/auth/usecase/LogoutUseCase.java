@@ -13,7 +13,7 @@ public class LogoutUseCase {
 
     @Inject
     public LogoutUseCase(TokenBlacklistService tokenBlacklistService,
-                        UserActivityService userActivityService) {
+                         UserActivityService userActivityService) {
         this.tokenBlacklistService = tokenBlacklistService;
         this.userActivityService = userActivityService;
     }
@@ -29,7 +29,6 @@ public class LogoutUseCase {
         }
 
         tokenBlacklistService.blacklistToken(cleanToken);
-
         userActivityService.removeActivity(cleanToken);
     }
 }
