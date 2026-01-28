@@ -37,11 +37,7 @@ export class ThemeService {
     const stored = localStorage.getItem(this.KEY);
     if (stored === 'light' || stored === 'dark') return stored;
 
-    // Check system preference
-    const prefersDark = window.matchMedia?.('(prefers-color-scheme: dark)').matches;
-    if (prefersDark) return 'dark';
-
-    // Fall back to environment default
+    // Fall back to environment default (do not auto-follow system theme)
     return this.defaultTheme;
   }
 
