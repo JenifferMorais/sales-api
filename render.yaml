@@ -14,26 +14,10 @@ services:
     plan: free
     region: oregon
     envVars:
-      - key: DB_HOST
+      - key: DATABASE_URL
         fromDatabase:
           name: sales-db
-          property: host
-      - key: DB_PORT
-        fromDatabase:
-          name: sales-db
-          property: port
-      - key: DB_NAME
-        fromDatabase:
-          name: sales-db
-          property: database
-      - key: DB_USERNAME
-        fromDatabase:
-          name: sales-db
-          property: user
-      - key: DB_PASSWORD
-        fromDatabase:
-          name: sales-db
-          property: password
+          property: connectionString
       - key: DB_MAX_POOL_SIZE
         value: 16
       - key: QUARKUS_HTTP_PORT

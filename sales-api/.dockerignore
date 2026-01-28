@@ -39,6 +39,8 @@ docs/
 
 # Docker (não copiar configs docker para dentro do container)
 docker/
+!docker/
+!docker/entrypoint.sh
 Dockerfile*
 docker-compose*.yml
 .dockerignore

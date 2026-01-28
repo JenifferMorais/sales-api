@@ -27,6 +27,10 @@ RUN mkdir -p /deployments
 COPY --from=build /app/src/main/resources/META-INF/resources/publicKey.pem /deployments/publicKey.pem
 COPY --from=build /app/src/main/resources/META-INF/resources/privateKey.pem /deployments/privateKey.pem
 
+# Entrypoint que monta QUARKUS_DATASOURCE_JDBC_URL a partir de DATABASE_URL (Render)
+COPY docker/entrypoint.sh /app/entrypoint.sh
+RUN chmod +x /app/entrypoint.sh
+
 # Expor porta
 EXPOSE 8080
 
@@ -35,4 +39,4 @@ ENV JAVA_OPTS="-Dquarkus.http.host=0.0.0.0 -Djava.util.logging.manager=org.jboss
 ENV JAVA_APP_JAR="quarkus-run.jar"
 
 # Executar aplicação
-ENTRYPOINT ["sh", "-c", "java $JAVA_OPTS -jar $JAVA_APP_JAR"]
+ENTRYPOINT ["sh", "/app/entrypoint.sh"]
