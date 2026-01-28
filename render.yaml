@@ -54,5 +54,6 @@ services:
     envVars:
       - key: API_URL
         value: https://sales-api.onrender.com/api
+    healthCheckPath: /health
     autoDeploy: true
     branch: main

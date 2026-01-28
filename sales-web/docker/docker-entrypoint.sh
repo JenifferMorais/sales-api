@@ -1,31 +1,27 @@
 #!/bin/sh
+set -eu
 
-# Script de entrypoint para substituir variáveis de ambiente no runtime
-# Permite configurar API_URL sem rebuild da imagem
+echo "[entrypoint] Starting Sales Web..."
 
-set -e
+PORT="${PORT:-10000}"
 
-echo "🚀 Starting Vendas Web Application..."
-
-# Substituir API_URL se fornecido
-if [ -n "$API_URL" ]; then
-    echo "📡 Configuring API URL: $API_URL"
-
-    # Encontrar todos os arquivos JS e substituir placeholder
-    find /usr/share/nginx/html -type f -name "*.js" -exec sed -i \
-        "s|http://localhost:8080/api|$API_URL|g" {} +
-
-    echo "✅ API URL configured successfully"
-else
-    echo "⚠️  API_URL not set, using default: http://localhost:8080/api"
+# Render sets $PORT; make nginx listen on it
+if [ -f /etc/nginx/nginx.conf ]; then
+  sed -i "s/listen 80;/listen ${PORT};/g" /etc/nginx/nginx.conf || true
 fi
 
-# Criar endpoint de health check
-cat > /usr/share/nginx/html/health <<EOF
-OK
-EOF
+# Replace API URL in built JS (no rebuild needed)
+if [ -n "${API_URL:-}" ]; then
+  echo "[entrypoint] Configuring API_URL=$API_URL"
+  # Support both the placeholder token and the previous localhost default.
+  find /usr/share/nginx/html -type f -name "*.js" -exec sed -i "s|__API_URL__|$API_URL|g" {} +
+  find /usr/share/nginx/html -type f -name "*.js" -exec sed -i "s|http://localhost:8080/api|$API_URL|g" {} +
+else
+  echo "[entrypoint] API_URL not set; using default http://localhost:8080/api"
+fi
 
-echo "✨ Application ready!"
+# Health check endpoint
+printf "OK\n" > /usr/share/nginx/html/health
 
-# Executar nginx
+echo "[entrypoint] Ready (port=${PORT})"
 exec "$@"
