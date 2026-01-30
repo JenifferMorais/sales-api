@@ -47,6 +47,4 @@ jobs:
           SONAR_ORGANIZATION: ${{ secrets.SONAR_ORGANIZATION }}
         run: |
           cd sales-api
-          mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar \
-            -Dsonar.projectKey=JenifferMorais_sales-api \
-            -Dsonar.organization=$SONAR_ORGANIZATION
+          mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar
