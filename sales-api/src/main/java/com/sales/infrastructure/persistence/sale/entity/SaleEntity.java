@@ -40,7 +40,7 @@ public class SaleEntity {
     @Column(name = "payment_method", nullable = false, length = 50)
     private String paymentMethod;
 
-    @Column(name = "card_number", length = 20)
+    @Column(name = "card_number", length = 200)
     private String cardNumber;
 
     @Column(name = "amount_paid", precision = 10, scale = 2)

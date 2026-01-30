@@ -1,6 +1,7 @@
 package com.sales.infrastructure.config;
 
 import com.sales.domain.auth.valueobject.Password;
+import com.sales.domain.shared.port.EncryptionService;
 import com.sales.infrastructure.persistence.auth.entity.UserEntity;
 import com.sales.infrastructure.persistence.customer.entity.CustomerEntity;
 import com.sales.infrastructure.persistence.product.entity.ProductEntity;
@@ -24,6 +25,9 @@ public class DataSeeder {
 
     @Inject
     EntityManager em;
+
+    @Inject
+    EncryptionService encryptionService;
 
     @Transactional
     public void loadData(@Observes StartupEvent event) {
@@ -493,6 +497,17 @@ public class DataSeeder {
         LOG.info("Products seeded: 12");
     }
 
+    /**
+     * Criptografa cardNumber para armazenamento seguro.
+     * Usado apenas no seed de dados de teste.
+     */
+    private String encryptCardNumber(String cardNumber) {
+        if (cardNumber == null || cardNumber.isEmpty()) {
+            return null;
+        }
+        return encryptionService.encrypt(cardNumber);
+    }
+
     private void seedSales() {
 
         SaleEntity sale1 = new SaleEntity();
@@ -502,7 +517,7 @@ public class DataSeeder {
         sale1.setSellerCode("SELLER001");
         sale1.setSellerName("Vendedor Sistema");
         sale1.setPaymentMethod("Cartão de Crédito");
-        sale1.setCardNumber("1234");
+        sale1.setCardNumber(encryptCardNumber("4532015112830366")); // Teste: Visa
         sale1.setAmountPaid(new BigDecimal("195.00"));
 
         SaleItemEntity item1_1 = new SaleItemEntity();
@@ -578,7 +593,7 @@ public class DataSeeder {
         sale4.setSellerCode("SELLER001");
         sale4.setSellerName("Vendedor Sistema");
         sale4.setPaymentMethod("Cartão de Débito");
-        sale4.setCardNumber("5678");
+        sale4.setCardNumber(encryptCardNumber("5425233430109903")); // Teste: Mastercard
         sale4.setAmountPaid(new BigDecimal("206.00"));
 
         SaleItemEntity item4_1 = new SaleItemEntity();
@@ -604,7 +619,7 @@ public class DataSeeder {
         sale5.setSellerCode("SELLER001");
         sale5.setSellerName("Vendedor Sistema");
         sale5.setPaymentMethod("Cartão de Crédito");
-        sale5.setCardNumber("9012");
+        sale5.setCardNumber(encryptCardNumber("378282246310005")); // Teste: Amex
         sale5.setAmountPaid(new BigDecimal("282.00"));
 
         SaleItemEntity item5_1 = new SaleItemEntity();
@@ -662,7 +677,7 @@ public class DataSeeder {
         sale7.setSellerCode("SELLER001");
         sale7.setSellerName("Vendedor Sistema");
         sale7.setPaymentMethod("Cartão de Crédito");
-        sale7.setCardNumber("3456");
+        sale7.setCardNumber(encryptCardNumber("6011111111111117")); // Teste: Discover
         sale7.setAmountPaid(new BigDecimal("340.00"));
 
         SaleItemEntity item7_1 = new SaleItemEntity();
@@ -745,7 +760,7 @@ public class DataSeeder {
         sale10.setSellerCode("SELLER001");
         sale10.setSellerName("Vendedor Sistema");
         sale10.setPaymentMethod("Cartão de Débito");
-        sale10.setCardNumber("1234");
+        sale10.setCardNumber(encryptCardNumber("4532015112830366")); // Teste: Visa
         sale10.setAmountPaid(new BigDecimal("371.00"));
 
         SaleItemEntity item10_1 = new SaleItemEntity();

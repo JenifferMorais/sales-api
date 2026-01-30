@@ -23,7 +23,7 @@ public class CustomerMapper {
                 request.getAddress().getState()
         );
         return new Customer(
-                request.getCode(),
+                null,
                 request.getFullName(),
                 request.getMotherName(),
                 document,

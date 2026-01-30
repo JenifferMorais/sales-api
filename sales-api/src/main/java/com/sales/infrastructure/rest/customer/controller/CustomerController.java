@@ -11,6 +11,7 @@ import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import org.eclipse.microprofile.openapi.annotations.Operation;
+import org.jboss.logging.Logger;
 import org.eclipse.microprofile.openapi.annotations.enums.SchemaType;
 import org.eclipse.microprofile.openapi.annotations.media.Content;
 import org.eclipse.microprofile.openapi.annotations.media.ExampleObject;
@@ -29,6 +30,8 @@ import java.util.stream.Collectors;
 @Tag(name = "Clientes", description = "API para gestão completa de clientes")
 public class CustomerController {
 
+    private static final Logger LOG = Logger.getLogger(CustomerController.class);
+
     @Inject CreateCustomerUseCase createCustomerUseCase;
     @Inject UpdateCustomerUseCase updateCustomerUseCase;
     @Inject FindCustomerUseCase findCustomerUseCase;
@@ -39,7 +42,7 @@ public class CustomerController {
     @POST
     @Operation(
         summary = "Criar novo cliente",
-        description = "Cria um novo cliente no sistema com todas as informações obrigatórias (CPF, endereço, etc.)"
+        description = "Cria um novo cliente no sistema com todas as informações obrigatórias (CPF, endereço, etc.). O código do cliente é gerado automaticamente no formato CUST0001, CUST0002, etc."
     )
     @APIResponses({
         @APIResponse(
@@ -113,7 +116,6 @@ public class CustomerController {
             required = true,
             example = """
             {
-              "code": "CUST001",
               "fullName": "João Silva",
               "motherName": "Maria Silva",
               "cpf": "123.456.789-09",
@@ -135,8 +137,15 @@ public class CustomerController {
         )
         CreateCustomerRequest request
     ) {
+        LOG.infof("Recebida requisição para criar cliente - Nome: %s, Email: %s",
+                  request.getFullName(), request.getEmail());
+
         Customer customer = mapper.toDomain(request);
         Customer created = createCustomerUseCase.execute(customer);
+
+        LOG.infof("Cliente criado via API - ID: %d, Código: %s",
+                  created.getId(), created.getCode());
+
         return Response.status(Response.Status.CREATED)
                 .entity(mapper.toResponse(created))
                 .build();
@@ -176,6 +185,9 @@ public class CustomerController {
         @PathParam("id") Long id,
         @Valid UpdateCustomerRequest request
     ) {
+        LOG.infof("Recebida requisição para atualizar cliente - ID: %d, Nome: %s",
+                  id, request.getFullName());
+
         Customer updated = updateCustomerUseCase.execute(
                 id,
                 request.getFullName(),
@@ -185,6 +197,9 @@ public class CustomerController {
                 request.getCellPhone().replaceAll("[^0-9]", ""),
                 request.getEmail()
         );
+
+        LOG.infof("Cliente atualizado via API - ID: %d", id);
+
         return Response.ok(mapper.toResponse(updated)).build();
     }
 
@@ -305,7 +320,12 @@ public class CustomerController {
         @Parameter(description = "ID do cliente", required = true, example = "1")
         @PathParam("id") Long id
     ) {
+        LOG.infof("Recebida requisição para excluir cliente - ID: %d", id);
+
         deleteCustomerUseCase.execute(id);
+
+        LOG.infof("Cliente excluído via API - ID: %d", id);
+
         return Response.noContent().build();
     }
 }

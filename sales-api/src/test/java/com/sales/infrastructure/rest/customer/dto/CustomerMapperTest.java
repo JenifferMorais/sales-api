@@ -22,7 +22,6 @@ class CustomerMapperTest {
     @Test
     void shouldMapCreateRequestToDomain() {
         CreateCustomerRequest request = new CreateCustomerRequest();
-        request.setCode("CUST001");
         request.setFullName("João Silva");
         request.setMotherName("Maria Silva");
         request.setCpf("123.456.789-09");
@@ -43,7 +42,7 @@ class CustomerMapperTest {
 
         Customer customer = mapper.toDomain(request);
 
-        assertThat(customer.getCode()).isEqualTo("CUST001");
+        assertThat(customer.getCode()).isNull();
         assertThat(customer.getFullName()).isEqualTo("João Silva");
         assertThat(customer.getMotherName()).isEqualTo("Maria Silva");
         assertThat(customer.getDocument().getCpf()).isEqualTo("12345678909");

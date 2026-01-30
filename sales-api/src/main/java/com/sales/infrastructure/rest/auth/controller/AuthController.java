@@ -14,6 +14,7 @@ import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 import org.eclipse.microprofile.openapi.annotations.Operation;
+import org.jboss.logging.Logger;
 import org.eclipse.microprofile.openapi.annotations.media.Content;
 import org.eclipse.microprofile.openapi.annotations.media.ExampleObject;
 import org.eclipse.microprofile.openapi.annotations.media.Schema;
@@ -26,6 +27,8 @@ import org.eclipse.microprofile.openapi.annotations.tags.Tag;
 @Consumes(MediaType.APPLICATION_JSON)
 @Tag(name = "Autenticação", description = "Endpoints para autenticação, registro e recuperação de senha")
 public class AuthController {
+
+    private static final Logger LOG = Logger.getLogger(AuthController.class);
 
     @Inject RegisterUserUseCase registerUserUseCase;
     @Inject LoginUseCase loginUseCase;
@@ -116,18 +119,53 @@ public class AuthController {
             )
     })
     public Response register(@Valid RegisterRequest request) {
+        LOG.infof("Recebida requisição de registro via API - Email: %s, Cliente: %s",
+                  request.getEmail(), request.getCustomerCode());
 
         if (!request.getPassword().equals(request.getConfirmPassword())) {
+            LOG.warn("Tentativa de registro com senhas não conferentes");
             return Response.status(Response.Status.BAD_REQUEST)
                     .entity(MessageResponse.of("Senhas não conferem"))
                     .build();
         }
 
-        User user = registerUserUseCase.execute(
-                request.getCustomerCode(),
-                request.getEmail(),
-                request.getPassword()
-        );
+        User user;
+
+        // Se customerCode for fornecido, usa cliente existente
+        if (request.hasCustomerCode()) {
+            user = registerUserUseCase.execute(
+                    request.getCustomerCode(),
+                    request.getEmail(),
+                    request.getPassword()
+            );
+        }
+        // Senão, cria novo cliente com os dados fornecidos
+        else if (request.hasCustomerData()) {
+            user = registerUserUseCase.executeWithNewCustomer(
+                    request.getFullName(),
+                    request.getMotherName(),
+                    request.getCpf(),
+                    request.getRg(),
+                    request.getZipCode(),
+                    request.getStreet(),
+                    request.getNumber(),
+                    request.getComplement(),
+                    request.getNeighborhood(),
+                    request.getCity(),
+                    request.getState(),
+                    request.getBirthDate(),
+                    request.getCellPhone(),
+                    request.getEmail(),
+                    request.getPassword()
+            );
+        } else {
+            LOG.warn("Tentativa de registro sem customerCode nem dados do cliente");
+            return Response.status(Response.Status.BAD_REQUEST)
+                    .entity(MessageResponse.of(
+                            "Forneça um customerCode de cliente existente OU os dados completos do novo cliente"
+                    ))
+                    .build();
+        }
 
         String token = loginUseCase.execute(request.getEmail(), request.getPassword());
 
@@ -138,6 +176,8 @@ public class AuthController {
                 user.getCustomerCode(),
                 jwtExpirationHours
         );
+
+        LOG.infof("Registro via API concluído com sucesso - Email: %s", request.getEmail());
 
         return Response.status(Response.Status.CREATED).entity(response).build();
     }
@@ -188,6 +228,8 @@ public class AuthController {
             )
     })
     public Response login(@Valid LoginRequest request) {
+        LOG.infof("Recebida requisição de login via API - Email: %s", request.getEmail());
+
         String token = loginUseCase.execute(request.getEmail(), request.getPassword());
 
         AuthResponse response = AuthResponse.builder()
@@ -195,6 +237,8 @@ public class AuthController {
                 .tokenType("Bearer")
                 .expiresIn(jwtExpirationHours * 3600)
                 .build();
+
+        LOG.infof("Login via API concluído com sucesso - Email: %s", request.getEmail());
 
         return Response.ok(response).build();
     }
@@ -341,9 +385,12 @@ public class AuthController {
             )
     })
     public Response logout(@Context HttpHeaders headers) {
+        LOG.debug("Recebida requisição de logout via API");
+
         String authHeader = headers.getHeaderString(HttpHeaders.AUTHORIZATION);
 
         if (authHeader == null || authHeader.isBlank()) {
+            LOG.warn("Tentativa de logout sem token de autenticação");
             return Response.status(Response.Status.UNAUTHORIZED)
                     .entity(MessageResponse.of("Token de autenticação não fornecido"))
                     .build();
@@ -351,12 +398,15 @@ public class AuthController {
 
         try {
             logoutUseCase.execute(authHeader);
+            LOG.info("Logout via API realizado com sucesso");
             return Response.ok(MessageResponse.of("Logout realizado com sucesso")).build();
         } catch (IllegalArgumentException e) {
+            LOG.warnf("Tentativa de logout com token inválido: %s", e.getMessage());
             return Response.status(Response.Status.BAD_REQUEST)
                     .entity(MessageResponse.of("Token inválido: " + e.getMessage()))
                     .build();
         } catch (Exception e) {
+            LOG.errorf(e, "Erro ao processar logout via API");
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
                     .entity(MessageResponse.of("Erro ao processar logout: " + e.getMessage()))
                     .build();

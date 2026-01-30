@@ -13,6 +13,7 @@ import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import org.eclipse.microprofile.openapi.annotations.Operation;
+import org.jboss.logging.Logger;
 import org.eclipse.microprofile.openapi.annotations.enums.SchemaType;
 import org.eclipse.microprofile.openapi.annotations.media.Content;
 import org.eclipse.microprofile.openapi.annotations.media.ExampleObject;
@@ -30,6 +31,8 @@ import java.util.stream.Collectors;
 @Consumes(MediaType.APPLICATION_JSON)
 @Tag(name = "Produtos", description = "API para gestão de produtos e controle de estoque")
 public class ProductController {
+
+    private static final Logger LOG = Logger.getLogger(ProductController.class);
 
     @Inject CreateProductUseCase createProductUseCase;
     @Inject UpdateProductUseCase updateProductUseCase;
@@ -88,8 +91,15 @@ public class ProductController {
         )
     })
     public Response create(@Valid ProductRequest request) {
+        LOG.infof("Recebida requisição para criar produto - Nome: %s, Tipo: %s",
+                  request.getName(), request.getType());
+
         Product product = mapper.toDomain(request);
         Product created = createProductUseCase.execute(product);
+
+        LOG.infof("Produto criado via API - ID: %d, Código: %s",
+                  created.getId(), created.getCode());
+
         return Response.status(Response.Status.CREATED).entity(mapper.toResponse(created)).build();
     }
 
@@ -109,12 +119,18 @@ public class ProductController {
         @PathParam("id") Long id,
         @Valid ProductRequest request
     ) {
+        LOG.infof("Recebida requisição para atualizar produto - ID: %d, Nome: %s",
+                  id, request.getName());
+
         Dimensions dimensions = new Dimensions(request.getHeight(), request.getWidth(), request.getDepth());
         Product updated = updateProductUseCase.execute(
                 id, request.getName(), ProductType.fromString(request.getType()),
                 request.getDetails(), request.getWeight(), request.getPurchasePrice(),
                 request.getSalePrice(), dimensions, request.getDestinationVehicle()
         );
+
+        LOG.infof("Produto atualizado via API - ID: %d", id);
+
         return Response.ok(mapper.toResponse(updated)).build();
     }
 
@@ -229,7 +245,12 @@ public class ProductController {
         @Parameter(description = "ID do produto", required = true, example = "1")
         @PathParam("id") Long id
     ) {
+        LOG.infof("Recebida requisição para excluir produto - ID: %d", id);
+
         deleteProductUseCase.execute(id);
+
+        LOG.infof("Produto excluído via API - ID: %d", id);
+
         return Response.noContent().build();
     }
 }

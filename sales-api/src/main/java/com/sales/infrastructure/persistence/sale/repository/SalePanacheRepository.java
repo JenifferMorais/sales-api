@@ -50,14 +50,14 @@ public class SalePanacheRepository implements PanacheRepository<SaleEntity> {
     public List<Map<String, Object>> getMonthlyRevenue(LocalDateTime start, LocalDateTime end) {
         String query = """
             SELECT
-                EXTRACT(MONTH FROM s.created_at) as month,
-                EXTRACT(YEAR FROM s.created_at) as year,
+                EXTRACT(MONTH FROM s.created_at) as sale_month,
+                EXTRACT(YEAR FROM s.created_at) as sale_year,
                 SUM(si.quantity * si.unit_price) as subtotal
             FROM sales s
             JOIN sale_items si ON si.sale_id = s.id
             WHERE s.created_at >= :start AND s.created_at <= :end
             GROUP BY EXTRACT(YEAR FROM s.created_at), EXTRACT(MONTH FROM s.created_at)
-            ORDER BY year DESC, month DESC
+            ORDER BY sale_year DESC, sale_month DESC
             """;
 
         List<Tuple> tuples = em.createNativeQuery(query, Tuple.class)
@@ -68,8 +68,8 @@ public class SalePanacheRepository implements PanacheRepository<SaleEntity> {
         return tuples.stream()
                 .map(tuple -> {
                     Map<String, Object> map = new HashMap<>();
-                    map.put("month", tuple.get("month"));
-                    map.put("year", tuple.get("year"));
+                    map.put("month", tuple.get("sale_month"));
+                    map.put("year", tuple.get("sale_year"));
                     map.put("subtotal", tuple.get("subtotal"));
                     return map;
                 })

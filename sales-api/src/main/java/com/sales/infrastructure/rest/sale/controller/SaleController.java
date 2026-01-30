@@ -11,6 +11,7 @@ import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import org.eclipse.microprofile.openapi.annotations.Operation;
+import org.jboss.logging.Logger;
 import org.eclipse.microprofile.openapi.annotations.enums.SchemaType;
 import org.eclipse.microprofile.openapi.annotations.media.Content;
 import org.eclipse.microprofile.openapi.annotations.media.ExampleObject;
@@ -28,6 +29,8 @@ import java.util.stream.Collectors;
 @Consumes(MediaType.APPLICATION_JSON)
 @Tag(name = "Vendas", description = "API para registro e consulta de sales")
 public class SaleController {
+
+    private static final Logger LOG = Logger.getLogger(SaleController.class);
 
     @Inject CreateSaleUseCase createSaleUseCase;
     @Inject UpdateSaleUseCase updateSaleUseCase;
@@ -150,8 +153,15 @@ public class SaleController {
         )
         SaleRequest request
     ) {
+        LOG.infof("Recebida requisição para criar venda - Código: %s, Cliente: %s, Itens: %d",
+                  request.getCode(), request.getCustomerCode(), request.getItems().size());
+
         Sale sale = mapper.toDomain(request);
         Sale created = createSaleUseCase.execute(sale);
+
+        LOG.infof("Venda criada via API - ID: %d, Código: %s, Valor: R$ %.2f",
+                  created.getId(), created.getCode(), created.getTotalAmount());
+
         return Response.status(Response.Status.CREATED).entity(mapper.toResponse(created)).build();
     }
 

@@ -5,6 +5,7 @@ import com.sales.domain.sale.entity.SaleItem;
 import com.sales.domain.sale.port.SaleRepository;
 import com.sales.domain.sale.valueobject.PaymentMethod;
 import com.sales.domain.shared.PageResult;
+import com.sales.domain.shared.port.EncryptionService;
 import com.sales.infrastructure.persistence.sale.entity.SaleEntity;
 import com.sales.infrastructure.persistence.sale.entity.SaleItemEntity;
 import jakarta.enterprise.context.ApplicationScoped;
@@ -22,6 +23,9 @@ public class SaleRepositoryAdapter implements SaleRepository {
     @Inject
     SalePanacheRepository panacheRepository;
 
+    @Inject
+    EncryptionService encryptionService;
+
     @Override
     @Transactional
     public Sale save(Sale sale) {
@@ -38,7 +42,7 @@ public class SaleRepositoryAdapter implements SaleRepository {
             entity.setSellerCode(sale.getSellerCode());
             entity.setSellerName(sale.getSellerName());
             entity.setPaymentMethod(sale.getPaymentMethod().name());
-            entity.setCardNumber(sale.getCardNumber());
+            entity.setCardNumber(encryptCardNumber(sale.getCardNumber()));
             entity.setAmountPaid(sale.getAmountPaid());
 
             entity.getItems().clear();
@@ -143,7 +147,7 @@ public class SaleRepositoryAdapter implements SaleRepository {
                 entity.getSellerCode(),
                 entity.getSellerName(),
                 PaymentMethod.fromString(entity.getPaymentMethod()),
-                entity.getCardNumber(),
+                decryptCardNumber(entity.getCardNumber()),
                 entity.getAmountPaid(),
                 items,
                 entity.getCreatedAt()
@@ -158,7 +162,7 @@ public class SaleRepositoryAdapter implements SaleRepository {
         entity.setSellerCode(sale.getSellerCode());
         entity.setSellerName(sale.getSellerName());
         entity.setPaymentMethod(sale.getPaymentMethod().name());
-        entity.setCardNumber(sale.getCardNumber());
+        entity.setCardNumber(encryptCardNumber(sale.getCardNumber()));
         entity.setAmountPaid(sale.getAmountPaid());
 
         for (SaleItem item : sale.getItems()) {
@@ -174,5 +178,29 @@ public class SaleRepositoryAdapter implements SaleRepository {
             entity.setCreatedAt(sale.getCreatedAt());
         }
         return entity;
+    }
+
+    private String encryptCardNumber(String cardNumber) {
+        if (cardNumber == null || cardNumber.isEmpty()) {
+            return null;
+        }
+        try {
+            return encryptionService.encrypt(cardNumber);
+        } catch (Exception e) {
+            throw new IllegalStateException(
+                "Não foi possível criptografar dados sensíveis", e);
+        }
+    }
+
+    private String decryptCardNumber(String encryptedCardNumber) {
+        if (encryptedCardNumber == null || encryptedCardNumber.isEmpty()) {
+            return null;
+        }
+        try {
+            return encryptionService.decrypt(encryptedCardNumber);
+        } catch (Exception e) {
+            throw new IllegalStateException(
+                "Não foi possível descriptografar dados sensíveis", e);
+        }
     }
 }

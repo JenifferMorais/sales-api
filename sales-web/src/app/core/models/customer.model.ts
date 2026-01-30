@@ -23,7 +23,6 @@ export interface Customer {
 }
 
 export interface CustomerRequest {
-  code?: string;
   fullName: string;
   motherName: string;
   cpf: string;

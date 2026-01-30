@@ -16,9 +16,6 @@ import java.time.LocalDate;
 @Builder
 public class CreateCustomerRequest {
 
-    @Size(max = 50, message = "Código deve ter no máximo 50 caracteres")
-    private String code;
-
     @NotBlank(message = "Nome completo é obrigatório")
     @Size(max = 200, message = "Nome completo deve ter no máximo 200 caracteres")
     private String fullName;
