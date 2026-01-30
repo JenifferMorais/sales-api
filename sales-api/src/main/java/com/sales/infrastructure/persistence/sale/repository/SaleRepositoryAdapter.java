@@ -11,6 +11,7 @@ import com.sales.infrastructure.persistence.sale.entity.SaleItemEntity;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
+import org.jboss.logging.Logger;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -19,6 +20,8 @@ import java.util.stream.Collectors;
 
 @ApplicationScoped
 public class SaleRepositoryAdapter implements SaleRepository {
+
+    private static final Logger LOG = Logger.getLogger(SaleRepositoryAdapter.class);
 
     @Inject
     SalePanacheRepository panacheRepository;
@@ -147,7 +150,7 @@ public class SaleRepositoryAdapter implements SaleRepository {
                 entity.getSellerCode(),
                 entity.getSellerName(),
                 PaymentMethod.fromString(entity.getPaymentMethod()),
-                decryptCardNumber(entity.getCardNumber()),
+                safeDecryptCardNumber(entity.getCardNumber(), entity.getCode()),
                 entity.getAmountPaid(),
                 items,
                 entity.getCreatedAt()
@@ -202,5 +205,46 @@ public class SaleRepositoryAdapter implements SaleRepository {
             throw new IllegalStateException(
                 "Não foi possível descriptografar dados sensíveis", e);
         }
+    }
+
+    private String safeDecryptCardNumber(String encryptedCardNumber, String saleCode) {
+        if (encryptedCardNumber == null || encryptedCardNumber.isEmpty()) {
+            return null;
+        }
+        try {
+            return decryptCardNumber(encryptedCardNumber);
+        } catch (IllegalStateException e) {
+            if (shouldFallbackToRawValue(encryptedCardNumber, e)) {
+                LOG.warnf(e, "Falha ao descriptografar número do cartão da venda %s; retornando valor armazenado", saleCode);
+                return encryptedCardNumber;
+            }
+            throw e;
+        }
+    }
+
+    private boolean shouldFallbackToRawValue(String storedValue, IllegalStateException exception) {
+        return looksLikeMaskedCardNumber(storedValue) || isBase64Problem(exception);
+    }
+
+    private boolean looksLikeMaskedCardNumber(String value) {
+        if (value == null) {
+            return false;
+        }
+        return value.contains("*") || value.contains(" ") || value.contains("-");
+    }
+
+    private boolean isBase64Problem(IllegalStateException exception) {
+        Throwable cause = exception.getCause();
+        while (cause != null) {
+            String message = cause.getMessage() != null ? cause.getMessage().toLowerCase() : "";
+            if (cause instanceof IllegalArgumentException && message.contains("base64")) {
+                return true;
+            }
+            if (message.contains("4-byte ending") || message.contains("input byte array")) {
+                return true;
+            }
+            cause = cause.getCause();
+        }
+        return false;
     }
 }

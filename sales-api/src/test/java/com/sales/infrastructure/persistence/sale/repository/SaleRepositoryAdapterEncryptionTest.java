@@ -44,6 +44,7 @@ class SaleRepositoryAdapterEncryptionTest {
     private SaleEntity testEntity;
     private static final String CARD_NUMBER = "4532015112830366";
     private static final String ENCRYPTED_CARD = "encrypted_card_base64";
+    private static final String MALFORMED_CARD = "1234****5678";
 
     @BeforeEach
     void setUp() {
@@ -250,6 +251,24 @@ class SaleRepositoryAdapterEncryptionTest {
             assertTrue(result.isPresent());
             assertNull(result.get().getCardNumber());
             verify(encryptionService, never()).decrypt(anyString());
+        }
+
+        @Test
+        @DisplayName("Deve retornar valor bruto quando cardNumber armazenado é inválido")
+        void shouldReturnStoredValueWhenCardNumberMalformed() {
+            testEntity.setCardNumber(MALFORMED_CARD);
+
+            when(panacheRepository.findByIdOptional(1L))
+                .thenReturn(Optional.of(testEntity));
+            when(encryptionService.decrypt(MALFORMED_CARD))
+                .thenThrow(new EncryptionException("Dados criptografados inválidos (Base64 malformado)",
+                    new IllegalArgumentException("Input byte array has wrong 4-byte ending at 3")));
+
+            Optional<Sale> result = repositoryAdapter.findById(1L);
+
+            assertTrue(result.isPresent());
+            assertEquals(MALFORMED_CARD, result.get().getCardNumber());
+            verify(encryptionService, times(1)).decrypt(MALFORMED_CARD);
         }
 
         @Test

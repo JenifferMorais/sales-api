@@ -13,6 +13,7 @@ import jakarta.enterprise.event.Observes;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
+import org.eclipse.microprofile.config.inject.ConfigProperty;
 import org.jboss.logging.Logger;
 
 import java.math.BigDecimal;
@@ -29,8 +30,17 @@ public class DataSeeder {
     @Inject
     EncryptionService encryptionService;
 
+    @Inject
+    @ConfigProperty(name = "app.seed.enabled", defaultValue = "false")
+    boolean seedEnabled;
+
     @Transactional
     public void loadData(@Observes StartupEvent event) {
+
+        if (!seedEnabled) {
+            LOG.info("Data seeding disabled (app.seed.enabled=false). Skipping.");
+            return;
+        }
 
         Long userCount = em.createQuery("SELECT COUNT(u) FROM UserEntity u", Long.class).getSingleResult();
         if (userCount > 0) {

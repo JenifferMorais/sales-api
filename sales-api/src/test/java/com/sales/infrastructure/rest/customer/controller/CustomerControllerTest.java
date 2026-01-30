@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.notNullValue;
+import static org.hamcrest.Matchers.matchesPattern;
 
 @QuarkusTest
 class CustomerControllerTest {
@@ -15,7 +16,6 @@ class CustomerControllerTest {
     void shouldCreateCustomer() {
         String requestBody = """
                 {
-                    "code": "CUST011",
                     "fullName": "João Silva",
                     "motherName": "Maria Silva",
                     "cpf": "123.456.789-09",
@@ -43,7 +43,7 @@ class CustomerControllerTest {
                 .then()
                 .statusCode(201)
                 .body("id", notNullValue())
-                .body("code", equalTo("CUST011"))
+                .body("code", matchesPattern("CUST\\d{4}"))
                 .body("fullName", equalTo("João Silva"))
                 .body("email", equalTo("joao.cust011@example.com"));
     }

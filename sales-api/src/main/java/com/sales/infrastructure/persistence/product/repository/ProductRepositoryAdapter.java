@@ -129,7 +129,7 @@ public class ProductRepositoryAdapter implements ProductRepository {
                 entity.getId(),
                 entity.getCode(),
                 entity.getName(),
-                ProductType.fromString(entity.getType()),
+                ProductType.fromDatabase(entity.getType()),
                 entity.getDetails(),
                 entity.getWeight(),
                 entity.getPurchasePrice(),

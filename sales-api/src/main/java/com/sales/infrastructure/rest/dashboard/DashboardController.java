@@ -17,6 +17,7 @@ import org.eclipse.microprofile.openapi.annotations.parameters.Parameter;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponses;
 import org.eclipse.microprofile.openapi.annotations.tags.Tag;
+import org.jboss.logging.Logger;
 
 import java.util.Map;
 
@@ -29,6 +30,7 @@ public class DashboardController {
     private final GetDashboardStatsUseCase getDashboardStatsUseCase;
     private final GetDashboardChartDataUseCase getDashboardChartDataUseCase;
     private final GetRecentSalesUseCase getRecentSalesUseCase;
+    private static final Logger LOG = Logger.getLogger(DashboardController.class);
 
     @Inject
     public DashboardController(
@@ -59,6 +61,7 @@ public class DashboardController {
             DashboardStatsResponse response = getDashboardStatsUseCase.execute();
             return Response.ok(response).build();
         } catch (Exception e) {
+            LOG.error("Erro ao obter estatísticas do dashboard", e);
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
                     .entity(Map.of("error", "Erro ao obter estatísticas: " + e.getMessage()))
                     .build();
@@ -97,6 +100,7 @@ public class DashboardController {
             DashboardChartResponse response = getDashboardChartDataUseCase.execute(range);
             return Response.ok(response).build();
         } catch (Exception e) {
+            LOG.error("Erro ao obter dados do gráfico do dashboard", e);
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
                     .entity(Map.of("error", "Erro ao obter dados do gráfico: " + e.getMessage()))
                     .build();
@@ -132,6 +136,7 @@ public class DashboardController {
             RecentSalesResponse response = getRecentSalesUseCase.execute(limit);
             return Response.ok(response).build();
         } catch (Exception e) {
+            LOG.error("Erro ao obter vendas recentes do dashboard", e);
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
                     .entity(Map.of("error", "Erro ao obter vendas recentes: " + e.getMessage()))
                     .build();
