@@ -36,6 +36,7 @@ class UserActivityEntityTest {
         UserActivityEntity entity = new UserActivityEntity();
 
         java.lang.reflect.Method onCreateMethod = UserActivityEntity.class.getDeclaredMethod("onCreate");
+
         onCreateMethod.setAccessible(true);
         onCreateMethod.invoke(entity);
 
