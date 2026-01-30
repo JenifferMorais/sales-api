@@ -21,7 +21,7 @@
         <!-- SonarCloud -->
         <sonar.organization>jeniffermorais</sonar.organization>
         <sonar.host.url>https://sonarcloud.io</sonar.host.url>
-        <sonar.projectKey>sales-api</sonar.projectKey>
+        <sonar.projectKey>JenifferMorais_sales-api</sonar.projectKey>
         <sonar.coverage.jacoco.xmlReportPaths>${project.build.directory}/site/jacoco/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
     </properties>
 
