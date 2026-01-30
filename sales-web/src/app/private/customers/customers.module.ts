@@ -2,6 +2,7 @@ import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
 import { ReactiveFormsModule } from '@angular/forms';
+import { provideEnvironmentNgxMask } from 'ngx-mask';
 import { SharedModule } from '../../shared/shared.module';
 import { CustomersListComponent } from './customers-list/customers-list.component';
 import { CustomersFormComponent } from './customers-form/customers-form.component';
@@ -26,6 +27,7 @@ const routes: Routes = [
     SharedModule,
     RouterModule.forChild(routes)
   ],
+  providers: [provideEnvironmentNgxMask()],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class CustomersModule { }

@@ -108,14 +108,9 @@
   color: #3b82f6;
 }
 
-.field.error .control--input input,
-.field.error .control--select select {
-  border-color: #ef4444;
-}
+@import '../../../../styles/forms';
 
-.field.error label {
-  color: #ef4444;
-}
+// Mantém os estilos específicos do sales-form abaixo
 
 @media (max-width: 960px) {
   .item-card__fields {

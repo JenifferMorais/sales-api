@@ -1,0 +1,128 @@
+:host {
+  display: block;
+  width: 100%;
+}
+
+.custom-select {
+  position: relative;
+  width: 100%;
+  user-select: none;
+
+  &.disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+
+    .custom-select__trigger {
+      cursor: not-allowed;
+    }
+  }
+}
+
+.custom-select__trigger {
+  height: var(--h);
+  padding: 0 40px 0 14px;
+  background-color: var(--input-bg);
+  border: 1px solid var(--input-border);
+  border-radius: var(--radius);
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  transition: all 0.15s ease;
+
+  &:hover:not(.disabled) {
+    border-color: var(--primary-400);
+  }
+
+  .custom-select.open & {
+    border-color: var(--primary-500);
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+  }
+}
+
+.custom-select__value {
+  flex: 1;
+  color: var(--input-text);
+  font-size: 16px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+
+  &.placeholder {
+    color: var(--input-placeholder);
+  }
+}
+
+.custom-select__arrow {
+  position: absolute;
+  right: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text);
+  opacity: 0.6;
+  transition: transform 0.2s ease;
+  pointer-events: none;
+
+  &.rotated {
+    transform: translateY(-50%) rotate(180deg);
+  }
+}
+
+.custom-select__dropdown {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  right: 0;
+  background-color: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  max-height: 300px;
+  overflow-y: auto;
+  z-index: 1000;
+  padding: 4px 0;
+
+  // Scroll customizado
+  &::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: var(--primary-300);
+    border-radius: 4px;
+
+    &:hover {
+      background: var(--primary-400);
+    }
+  }
+}
+
+.custom-select__option {
+  padding: 10px 14px;
+  font-size: 14px;
+  line-height: 1.4;
+  color: var(--text);
+  cursor: pointer;
+  transition: all 0.15s ease;
+  border-radius: 4px;
+  margin: 2px 4px;
+
+  &:hover:not(.disabled) {
+    background-color: var(--panel-2);
+  }
+
+  &.selected {
+    background: linear-gradient(90deg, var(--primary-100) 0%, var(--primary-50) 100%);
+    color: var(--primary-800);
+    font-weight: 500;
+  }
+
+  &.disabled {
+    color: var(--input-placeholder);
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}

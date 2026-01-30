@@ -837,3 +837,113 @@ table {
     grid-template-columns: 1fr;
   }
 }
+
+// ==================================================
+// SELECT NATIVO - ESTILOS GLOBAIS (apenas para selects nativos)
+// ==================================================
+
+// Estilos apenas para selects nativos com classe específica
+select.native-select option {
+  background-color: var(--panel);
+  color: var(--text);
+  padding: 10px 14px;
+  font-size: 14px;
+  line-height: 1.5;
+  font-family: 'Sora', system-ui, sans-serif;
+}
+
+select.native-select::-webkit-scrollbar {
+  width: 8px;
+}
+
+select.native-select::-webkit-scrollbar-track {
+  background: var(--panel);
+  border-radius: var(--radius);
+}
+
+select.native-select::-webkit-scrollbar-thumb {
+  background: var(--primary-300);
+  border-radius: var(--radius);
+}
+
+select.native-select::-webkit-scrollbar-thumb:hover {
+  background: var(--primary-400);
+}
+
+// ==================================================
+// ANGULAR MATERIAL OVERLAYS (Select, Datepicker, etc)
+// ==================================================
+
+// Painel do select (dropdown) - GLOBAL com alta especificidade
+.cdk-overlay-container .mat-mdc-select-panel,
+.mat-mdc-select-panel {
+  background-color: var(--panel) !important;
+  border-radius: var(--radius) !important;
+  box-shadow: var(--shadow) !important;
+  border: 1px solid var(--border) !important;
+  max-height: 300px !important;
+}
+
+.cdk-overlay-container .mat-mdc-option,
+.mat-mdc-select-panel .mat-mdc-option {
+  background-color: var(--panel) !important;
+  color: var(--text) !important;
+  font-size: 14px !important;
+  padding: 8px 14px !important;
+  min-height: 36px !important;
+  height: 36px !important;
+  line-height: 1.4 !important;
+  font-family: 'Sora', system-ui, sans-serif !important;
+}
+
+.cdk-overlay-container .mat-mdc-option:hover:not(.mdc-list-item--disabled),
+.mat-mdc-select-panel .mat-mdc-option:hover:not(.mdc-list-item--disabled) {
+  background-color: var(--panel-2) !important;
+}
+
+.cdk-overlay-container .mat-mdc-option.mat-mdc-option-active,
+.cdk-overlay-container .mat-mdc-option.mdc-list-item--selected,
+.mat-mdc-select-panel .mat-mdc-option.mat-mdc-option-active,
+.mat-mdc-select-panel .mat-mdc-option.mdc-list-item--selected {
+  background-color: var(--primary-100) !important;
+  color: var(--primary-800) !important;
+  font-weight: 500 !important;
+}
+
+.cdk-overlay-container .mat-mdc-option .mdc-list-item__primary-text,
+.mat-mdc-select-panel .mat-mdc-option .mdc-list-item__primary-text {
+  color: inherit !important;
+  font-size: 14px !important;
+  line-height: 1.4 !important;
+  font-family: inherit !important;
+}
+
+// Datepicker overlay - GLOBAL
+.mat-datepicker-content {
+  background-color: var(--panel) !important;
+  color: var(--text) !important;
+  border-radius: var(--radius) !important;
+  box-shadow: var(--shadow) !important;
+
+  .mat-calendar {
+    background-color: var(--panel) !important;
+    color: var(--text) !important;
+  }
+
+  .mat-calendar-header {
+    background-color: var(--panel) !important;
+  }
+
+  .mat-calendar-body-selected {
+    background-color: var(--primary-500) !important;
+    color: white !important;
+  }
+
+  .mat-calendar-body-cell:not(.mat-calendar-body-disabled):hover > .mat-calendar-body-cell-content:not(.mat-calendar-body-selected) {
+    background-color: var(--panel-2) !important;
+  }
+
+  .mat-calendar-body-today:not(.mat-calendar-body-selected) {
+    border-color: var(--primary-500) !important;
+  }
+}

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CustomerService } from '../../../core/services/customer.service';
@@ -9,7 +9,8 @@ import { Customer, CustomerRequest } from '../../../core/models/customer.model';
   selector: 'app-customers-form',
   templateUrl: './customers-form.component.html',
   styleUrls: ['./customers-form.component.scss'],
-  standalone: false
+  standalone: false,
+  encapsulation: ViewEncapsulation.None
 })
 export class CustomersFormComponent implements OnInit {
   form: FormGroup;

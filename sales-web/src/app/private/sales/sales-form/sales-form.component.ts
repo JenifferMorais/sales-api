@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SaleService } from '../../../core/services/sale.service';
@@ -6,12 +6,14 @@ import { ProductService } from '../../../core/services/product.service';
 import { CustomerService } from '../../../core/services/customer.service';
 import { AlertService } from '../../../shared/services/alert/alert.service';
 import { SaleRequest, SaleItemRequest } from '../../../core/models/sale.model';
+import { SelectOption } from '../../../shared/components/custom-select/custom-select.component';
 
 @Component({
   selector: 'app-sales-form',
   templateUrl: './sales-form.component.html',
   styleUrls: ['./sales-form.component.scss'],
-  standalone: false
+  standalone: false,
+  encapsulation: ViewEncapsulation.None
 })
 export class SalesFormComponent implements OnInit {
   loading = false;
@@ -23,12 +25,26 @@ export class SalesFormComponent implements OnInit {
   customers: any[] = [];
   products: any[] = [];
 
-  paymentMethods = [
+  paymentMethods: SelectOption[] = [
     { label: 'Dinheiro', value: 'CASH' },
     { label: 'Cartão de Crédito', value: 'CREDIT_CARD' },
     { label: 'Cartão de Débito', value: 'DEBIT_CARD' },
     { label: 'PIX', value: 'PIX' }
   ];
+
+  get customerOptions(): SelectOption[] {
+    return this.customers.map(c => ({
+      value: c.code,
+      label: c.fullName
+    }));
+  }
+
+  get productOptions(): SelectOption[] {
+    return this.products.map(p => ({
+      value: p.code,
+      label: p.name
+    }));
+  }
 
   constructor(
     private fb: FormBuilder,

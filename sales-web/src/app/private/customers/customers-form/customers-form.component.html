@@ -28,14 +28,14 @@
         <div class="field" [class.error]="form.get('cpf')?.invalid && form.get('cpf')?.touched">
           <label>CPF*</label>
           <div class="control control--input">
-            <input formControlName="cpf" placeholder="000.000.000-00" inputmode="numeric" />
+            <input formControlName="cpf" mask="000.000.000-00" placeholder="000.000.000-00" inputmode="numeric" />
           </div>
         </div>
 
         <div class="field" [class.error]="form.get('rg')?.invalid && form.get('rg')?.touched">
           <label>RG*</label>
           <div class="control control--input">
-            <input formControlName="rg" placeholder="00.000.000-0" inputmode="text" />
+            <input formControlName="rg" mask="00.000.000-0" placeholder="00.000.000-0" inputmode="text" />
           </div>
         </div>
 
@@ -49,15 +49,16 @@
         <div class="field" [class.error]="form.get('cellPhone')?.invalid && form.get('cellPhone')?.touched">
           <label>Celular*</label>
           <div class="control control--input">
-            <input formControlName="cellPhone" placeholder="(00) 00000-0000" inputmode="tel" />
+            <input formControlName="cellPhone" mask="(00) 00000-0000" placeholder="(00) 00000-0000" inputmode="tel" />
           </div>
         </div>
 
         <div class="field" [class.error]="form.get('birthDate')?.invalid && form.get('birthDate')?.touched">
           <label>Data de nascimento*</label>
-          <div class="control control--input">
-            <input type="date" formControlName="birthDate" />
-          </div>
+          <app-custom-datepicker
+            formControlName="birthDate"
+            placeholder="DD/MM/AAAA">
+          </app-custom-datepicker>
         </div>
       </div>
     </div>
@@ -69,7 +70,7 @@
       <div class="field" [class.error]="form.get('address.zipCode')?.invalid && form.get('address.zipCode')?.touched">
         <label>CEP*</label>
         <div class="control control--input">
-          <input formControlName="zipCode" placeholder="00000-000" inputmode="numeric" />
+          <input formControlName="zipCode" mask="00000-000" placeholder="00000-000" inputmode="numeric" />
         </div>
       </div>
 

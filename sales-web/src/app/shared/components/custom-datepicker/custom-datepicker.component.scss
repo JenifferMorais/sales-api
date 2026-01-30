@@ -1,0 +1,163 @@
+:host {
+  display: block;
+  width: 100%;
+}
+
+.custom-datepicker {
+  position: relative;
+  width: 100%;
+
+  &.disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+
+    .custom-datepicker__input {
+      cursor: not-allowed;
+    }
+  }
+}
+
+.custom-datepicker__input {
+  width: 100%;
+  height: 44px;
+  padding: 0 40px 0 14px;
+  background-color: var(--input-bg);
+  border: 1px solid var(--input-border);
+  border-radius: var(--radius);
+  color: var(--input-text);
+  font-size: 16px;
+  font-family: inherit;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  color-scheme: light;
+  box-sizing: border-box;
+
+  &:hover {
+    border-color: var(--primary-400);
+  }
+
+  &:focus {
+    outline: none;
+    border-color: var(--primary-500);
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+    background-color: var(--input-bg);
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+
+  // Esconde o ícone padrão do navegador
+  &::-webkit-calendar-picker-indicator {
+    opacity: 0;
+    position: absolute;
+    right: 0;
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+  }
+
+  // Remove botões de limpar em alguns navegadores
+  &::-webkit-clear-button,
+  &::-webkit-inner-spin-button {
+    display: none;
+  }
+
+  // Formatação dos elementos internos do date
+  &::-webkit-datetime-edit {
+    padding: 0;
+  }
+
+  &::-webkit-datetime-edit-fields-wrapper {
+    padding: 0;
+  }
+
+  &::-webkit-datetime-edit-text {
+    padding: 0 2px;
+  }
+
+  &::-webkit-datetime-edit-month-field,
+  &::-webkit-datetime-edit-day-field,
+  &::-webkit-datetime-edit-year-field {
+    padding: 0 2px;
+    background: transparent;
+  }
+
+  // Quando tem valor, usar cor normal do texto
+  &:not(:placeholder-shown) {
+    color: var(--input-text);
+
+    &::-webkit-datetime-edit-text,
+    &::-webkit-datetime-edit-month-field,
+    &::-webkit-datetime-edit-day-field,
+    &::-webkit-datetime-edit-year-field {
+      color: var(--input-text);
+    }
+  }
+
+  // Quando está vazio (placeholder), usar cor do placeholder
+  &:placeholder-shown,
+  &:not([value]),
+  &[value=""] {
+    color: var(--input-placeholder);
+
+    &::-webkit-datetime-edit-text,
+    &::-webkit-datetime-edit-month-field,
+    &::-webkit-datetime-edit-day-field,
+    &::-webkit-datetime-edit-year-field {
+      color: var(--input-placeholder);
+    }
+  }
+
+  // Remove background azul quando selecionado (Chrome)
+  &::-webkit-datetime-edit-month-field:focus,
+  &::-webkit-datetime-edit-day-field:focus,
+  &::-webkit-datetime-edit-year-field:focus {
+    background: transparent;
+    outline: none;
+  }
+}
+
+.custom-datepicker__icon {
+  position: absolute;
+  right: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text);
+  opacity: 0.6;
+  pointer-events: none;
+  transition: opacity 0.15s ease;
+}
+
+.custom-datepicker__input:hover ~ .custom-datepicker__icon,
+.custom-datepicker__input:focus ~ .custom-datepicker__icon {
+  opacity: 0.9;
+}
+
+// Tema escuro
+html[data-theme="dark"] .custom-datepicker__input {
+  color-scheme: dark;
+
+  // Quando tem valor no tema escuro
+  &:not(:placeholder-shown) {
+    &::-webkit-datetime-edit-text,
+    &::-webkit-datetime-edit-month-field,
+    &::-webkit-datetime-edit-day-field,
+    &::-webkit-datetime-edit-year-field {
+      color: var(--input-text);
+    }
+  }
+
+  // Quando está vazio no tema escuro
+  &:placeholder-shown,
+  &:not([value]),
+  &[value=""] {
+    &::-webkit-datetime-edit-text,
+    &::-webkit-datetime-edit-month-field,
+    &::-webkit-datetime-edit-day-field,
+    &::-webkit-datetime-edit-year-field {
+      color: var(--input-placeholder);
+    }
+  }
+}

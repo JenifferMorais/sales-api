@@ -1,21 +1,34 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ProductService } from '../../../core/services/product.service';
 import { AlertService } from '../../../shared/services/alert/alert.service';
 import { Product, ProductRequest } from '../../../core/models/product.model';
+import { SelectOption } from '../../../shared/components/custom-select/custom-select.component';
 
 @Component({
   selector: 'app-products-form',
   templateUrl: './products-form.component.html',
   styleUrls: ['./products-form.component.scss'],
-  standalone: false
+  standalone: false,
+  encapsulation: ViewEncapsulation.None
 })
 export class ProductsFormComponent implements OnInit {
   form: FormGroup;
   isEdit = false;
   productCode?: string;
   productId?: number;
+
+  categoryOptions: SelectOption[] = [
+    { value: 'LIPS', label: 'Lábios' },
+    { value: 'FACE', label: 'Rosto' },
+    { value: 'EYES', label: 'Olhos' },
+    { value: 'NAILS', label: 'Unhas' },
+    { value: 'SKIN_CARE', label: 'Cuidados com a Pele' },
+    { value: 'HAIR', label: 'Cabelos' },
+    { value: 'FRAGRANCE', label: 'Fragrância' },
+    { value: 'OTHER', label: 'Outros' }
+  ];
 
   constructor(
     private fb: FormBuilder,
@@ -28,12 +41,12 @@ export class ProductsFormComponent implements OnInit {
       name: ['', [Validators.required]],
       type: ['', [Validators.required]],
       details: [''],
-      weight: [0, [Validators.required, Validators.min(0)]],
-      purchasePrice: [0, [Validators.required, Validators.min(0)]],
-      salePrice: [0, [Validators.required, Validators.min(0)]],
-      height: [0, [Validators.required, Validators.min(0)]],
-      width: [0, [Validators.required, Validators.min(0)]],
-      depth: [0, [Validators.required, Validators.min(0)]],
+      weight: [null, [Validators.required, Validators.min(0)]],
+      purchasePrice: [null, [Validators.required, Validators.min(0)]],
+      salePrice: [null, [Validators.required, Validators.min(0)]],
+      height: [null, [Validators.required, Validators.min(0)]],
+      width: [null, [Validators.required, Validators.min(0)]],
+      depth: [null, [Validators.required, Validators.min(0)]],
       destinationVehicle: ['']
     });
   }

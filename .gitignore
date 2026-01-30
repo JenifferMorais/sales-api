@@ -305,3 +305,4 @@ remove-comments-tests.py
 /.claude
 .claude/settings.local.json
 /docs
+/.m2temp

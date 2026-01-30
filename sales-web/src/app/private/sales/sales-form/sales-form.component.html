@@ -13,32 +13,27 @@
       <div class="grid-2">
         <div class="field" [class.error]="form.get('customerCode')?.invalid && form.get('customerCode')?.touched">
           <label>Cliente*</label>
-          <div class="control control--select">
-            <select formControlName="customerCode">
-              <option value="">Selecione um cliente</option>
-              <option *ngFor="let customer of customers" [value]="customer.code">
-                {{ customer.fullName }}
-              </option>
-            </select>
-          </div>
+          <app-custom-select
+            formControlName="customerCode"
+            [options]="customerOptions"
+            placeholder="Selecione um cliente">
+          </app-custom-select>
         </div>
 
         <div class="field" [class.error]="form.get('paymentMethod')?.invalid && form.get('paymentMethod')?.touched">
           <label>Forma de pagamento*</label>
-          <div class="control control--select">
-            <select formControlName="paymentMethod">
-              <option *ngFor="let method of paymentMethods" [value]="method.value">
-                {{ method.label }}
-              </option>
-            </select>
-          </div>
+          <app-custom-select
+            formControlName="paymentMethod"
+            [options]="paymentMethods"
+            placeholder="Selecione a forma de pagamento">
+          </app-custom-select>
         </div>
 
         <div class="field full" *ngIf="form.get('paymentMethod')?.value === 'CREDIT_CARD' || form.get('paymentMethod')?.value === 'DEBIT_CARD'"
              [class.error]="form.get('cardNumber')?.invalid && form.get('cardNumber')?.touched">
           <label>Número do cartão*</label>
           <div class="control control--input">
-            <input formControlName="cardNumber" placeholder="**** **** **** ****" inputmode="numeric" />
+            <input formControlName="cardNumber" mask="0000 0000 0000 0000" placeholder="**** **** **** ****" inputmode="numeric" />
           </div>
         </div>
       </div>
@@ -58,14 +53,12 @@
         <div class="item-card__fields">
           <div class="field" [class.error]="item.get('productCode')?.invalid && item.get('productCode')?.touched">
             <label>Produto*</label>
-            <div class="control control--select">
-              <select formControlName="productCode" (change)="onProductChange(i)">
-                <option value="">Selecione um produto</option>
-                <option *ngFor="let product of products" [value]="product.code">
-                  {{ product.name }}
-                </option>
-              </select>
-            </div>
+            <app-custom-select
+              formControlName="productCode"
+              [options]="productOptions"
+              placeholder="Selecione um produto"
+              (change)="onProductChange(i)">
+            </app-custom-select>
           </div>
 
           <div class="field" [class.error]="item.get('quantity')?.invalid && item.get('quantity')?.touched">
@@ -77,8 +70,9 @@
 
           <div class="field" [class.error]="item.get('unitPrice')?.invalid && item.get('unitPrice')?.touched">
             <label>Preço unitário*</label>
-            <div class="control control--input">
-              <input type="number" formControlName="unitPrice" min="0" step="0.01" placeholder="0.00" />
+            <div class="control control--input control--currency">
+              <span class="currency-prefix">R$</span>
+              <input type="number" formControlName="unitPrice" min="0" step="0.01" placeholder="0,00" />
             </div>
           </div>
 

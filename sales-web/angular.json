@@ -39,7 +39,8 @@
             "styles": [
               "@angular/material/prebuilt-themes/indigo-pink.css",
               "src/styles/tokens.scss",
-              "src/styles.scss"
+              "src/styles.scss",
+              "src/styles/material-overrides.scss"
             ],
             "scripts": []
           },
@@ -110,7 +111,8 @@
             "styles": [
               "@angular/material/prebuilt-themes/indigo-pink.css",
               "src/styles/tokens.scss",
-              "src/styles.scss"
+              "src/styles.scss",
+              "src/styles/material-overrides.scss"
             ],
             "scripts": []
           }
